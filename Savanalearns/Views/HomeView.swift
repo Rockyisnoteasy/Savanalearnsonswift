@@ -70,6 +70,11 @@ struct HomeView: View {
     // MARK: - Helper Functions
     
     private func startLearningSession(plan: Plan, words: [String], isNewWords: Bool) {
+        print("DEBUG: startLearningSession called")
+        print("DEBUG: Plan: \(plan.planName), isNewWords: \(isNewWords)")
+        print("DEBUG: Words received: \(words)")
+        print("DEBUG: Words count: \(words.count)")
+        
         print("MainActivity: Starting \(isNewWords ? "NEW WORD" : "REVIEW") session for planId=\(plan.id)")
         
         // Set up session data
@@ -77,11 +82,16 @@ struct HomeView: View {
         wordsForCurrentSession = words
         isNewWordSession = isNewWords
         
+        print("DEBUG: wordsForCurrentSession set to: \(wordsForCurrentSession)")
+        print("DEBUG: About to show FlipCard with words: \(wordsForCurrentSession)")
+        
         // Register session with AuthViewModel
         authViewModel.startSession(plan: plan, words: words)
         
         // Show FlipCard view
-        showFlipCard = true
+        DispatchQueue.main.async {
+            self.showFlipCard = true
+        }
     }
     
     private func handleFlipCardSessionComplete() {

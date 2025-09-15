@@ -20,27 +20,32 @@ struct FlipCardView: View {
     var body: some View {
         VStack {
             if displayWords.isEmpty {
-                // Empty state - session complete
-                EmptyView()
+                Text("No words to display")
                     .onAppear {
+                        print("DEBUG: displayWords is empty, calling onSessionComplete")
                         onSessionComplete()
                     }
             } else if currentIndex < displayWords.count {
                 let word = displayWords[currentIndex]
                 
+                // DEBUG: Print current state
+                let _ = print("DEBUG: Showing word '\(word)' (\(currentIndex + 1)/\(displayWords.count))")
+                
                 // Progress indicator
                 HStack {
                     Text("\(currentIndex + 1)/\(displayWords.count)")
                         .font(.subheadline)
+                        .foregroundColor(.white)
                     Spacer()
                     Text("熟悉度：○")
                         .font(.subheadline)
+                        .foregroundColor(.white)
                 }
                 .padding(.horizontal)
                 
                 Spacer()
                 
-                // Flip card
+                // Flip card with proper sizing
                 ZStack {
                     if !isFlipped {
                         FrontCardView(
@@ -55,6 +60,8 @@ struct FlipCardView: View {
                         )
                     }
                 }
+                .frame(maxWidth: .infinity)
+                .frame(height: 400) // Fixed height to ensure visibility
                 .modifier(FlipEffect(flipped: $isFlipped, angle: isFlipped ? 180 : 0, axis: (x: 0, y: 1)))
                 .onTapGesture {
                     withAnimation(.spring()) {
@@ -63,6 +70,7 @@ struct FlipCardView: View {
                 }
                 .onLongPressGesture(minimumDuration: 0.5) {
                     // Mark word as familiar
+                    print("DEBUG: Marking '\(word)' as familiar")
                     authViewModel.markWordAsFamiliar(word)
                     showCircleAnimation = true
                     
@@ -85,7 +93,6 @@ struct FlipCardView: View {
                 // Bottom control buttons
                 HStack(spacing: 40) {
                     IconTextButton(iconName: "speaker.wave.2.fill", label: "朗读") {
-                        // Play audio for current word and sentence
                         playAudio(for: word)
                     }
                     
@@ -100,37 +107,45 @@ struct FlipCardView: View {
                     }
                 }
                 .padding(.bottom)
+            } else {
+                Text("Index out of bounds")
+                    .onAppear {
+                        print("DEBUG: currentIndex (\(currentIndex)) >= displayWords.count (\(displayWords.count))")
+                    }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black) // Match Android dark theme
         .overlay(
-            // Circle animation overlay for familiar word
             showCircleAnimation ? CircleAnimationOverlay() : nil
         )
-        .padding()
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: onBack) {
                     HStack {
                         Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
                         Text("返回")
+                            .foregroundColor(.white)
                     }
                 }
             }
         }
         .onAppear {
+            print("DEBUG: FlipCardView appeared with \(wordList.count) words")
             setupSession()
-            if !displayWords.isEmpty {
-                fetchSentenceAndPlayAudio(for: displayWords[0])
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if !displayWords.isEmpty {
+                    fetchSentenceAndPlayAudio(for: displayWords[0])
+                }
             }
-        }
-        .onDisappear {
-            // Stop any playing audio
-            // TODO: Implement audio stop
         }
     }
     
     private func setupSession() {
+        print("DEBUG: setupSession called with \(wordList.count) words")
+        print("DEBUG: Word list: \(wordList)")
         displayWords = wordList
         
         // Start the session in AuthViewModel
@@ -193,20 +208,31 @@ struct FrontCardView: View {
     
     var body: some View {
         VStack(spacing: 20) {
+            // Word display
             Text(word)
-                .font(.largeTitle)
-                .fontWeight(.bold)
+                .font(.system(size: 48, weight: .bold))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
             
+            // Sentence display (if available)
             if let sentence = sentence {
+                Spacer()
                 Text(sentence)
                     .font(.body)
+                    .foregroundColor(.white.opacity(0.8))
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 20)
+            } else {
+                // Debug: Show when no sentence
+                Text("(No sentence available)")
+                    .font(.caption)
+                    .foregroundColor(.gray)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(UIColor.secondarySystemBackground))
-        .cornerRadius(20)
+        .background(Color(red: 0.17, green: 0.17, blue: 0.17)) // Match Android color #2B2B2B
+        .cornerRadius(24)
+        .padding()
     }
 }
 
@@ -218,25 +244,31 @@ struct BackCardView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
-                if let short = shortDefinition {
+                if let short = shortDefinition, !short.isEmpty {
                     Text("简化释义")
                         .font(.headline)
+                        .foregroundColor(.white)
                     Text(short)
                         .font(.body)
+                        .foregroundColor(.white.opacity(0.9))
                     
                     Divider()
+                        .background(Color.white.opacity(0.3))
                 }
                 
                 Text("完整释义")
                     .font(.headline)
+                    .foregroundColor(.white)
                 Text(fullDefinition)
                     .font(.body)
+                    .foregroundColor(.white.opacity(0.9))
             }
-            .padding()
+            .padding(20)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(UIColor.secondarySystemBackground))
-        .cornerRadius(20)
+        .background(Color(red: 0.17, green: 0.17, blue: 0.17)) // Match Android color
+        .cornerRadius(24)
+        .padding()
     }
 }
 
@@ -251,8 +283,10 @@ struct IconTextButton: View {
             VStack(spacing: 4) {
                 Image(systemName: iconName)
                     .font(.title2)
+                    .foregroundColor(.white)
                 Text(label)
                     .font(.caption)
+                    .foregroundColor(.white)
             }
         }
     }

@@ -87,10 +87,14 @@ struct LearningPlanCardView: View {
             HStack(spacing: 12) {
                 // 2. 修改“复习”按钮的 action
                 Button(action: {
-                    // 当按钮被点击时，调用 onStartReview 闭包
-                    // 并将当前的 plan 和复习单词列表作为参数传递出去
-                    if let words = dailySession?.reviewWords {
+                    print("DEBUG: Review button clicked for plan \(plan.planName)")
+                    print("DEBUG: reviewWords count: \(dailySession?.reviewWords.count ?? -1)")
+                    
+                    if let words = dailySession?.reviewWords, !words.isEmpty {
+                        print("DEBUG: Using review words: \(words)")
                         onStartReview(plan, words)
+                    } else {
+                        print("DEBUG: No review words available")
                     }
                 }) {
                     Text("复习 \(reviewCount) 词")
@@ -101,11 +105,29 @@ struct LearningPlanCardView: View {
 
                 // 3. 修改“学习”按钮的 action
                 Button(action: {
-                    // 当按钮被点击时，调用 onStartLearnNew 闭包
-                    // 并将当前的 plan 和新学单词列表作为参数传递出去
-                    if let words = dailySession?.newWords {
-                        onStartLearnNew(plan, words)
+                    // Debug: Print what we have
+                    print("DEBUG: Button clicked for plan \(plan.planName)")
+                    print("DEBUG: dailySession exists: \(dailySession != nil)")
+                    print("DEBUG: newWords count: \(dailySession?.newWords.count ?? -1)")
+                    print("DEBUG: newWords: \(dailySession?.newWords ?? [])")
+                    
+                    // Try to get words from dailySession first, fallback to plan if needed
+                    var wordsToUse: [String] = []
+                    
+                    if let sessionWords = dailySession?.newWords, !sessionWords.isEmpty {
+                        wordsToUse = sessionWords
+                        print("DEBUG: Using words from dailySession: \(sessionWords)")
+                    } else if let planWords = plan.dailyWords?.first?.words, !planWords.isEmpty {
+                        wordsToUse = planWords
+                        print("DEBUG: Using words from plan.dailyWords: \(planWords)")
+                    } else {
+                        print("DEBUG: No words found anywhere!")
+                        // Create some test words as fallback
+                        wordsToUse = ["test", "word", "example"]
+                        print("DEBUG: Using fallback test words: \(wordsToUse)")
                     }
+                    
+                    onStartLearnNew(plan, wordsToUse)
                 }) {
                     Text("学习 \(newCount) 词")
                         .frame(maxWidth: .infinity)
