@@ -44,11 +44,11 @@ struct FlipCardView: View {
                 HStack {
                     Text("\(currentIndex + 1)/\(displayWords.count)")
                         .font(.subheadline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.gray)
                     Spacer()
                     Text("熟悉度：○")
                         .font(.subheadline)
-                        .foregroundColor(.white)
+                        .foregroundColor(.gray)
                 }
                 .padding(.horizontal)
                 
@@ -73,7 +73,7 @@ struct FlipCardView: View {
                     .opacity(isFlipped ? 1 : 0) // Shows the back when flipped
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 400)
+                .frame(height: 600)
                 .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0.0, y: 1.0, z: 0.0))
                 .onTapGesture {
                     withAnimation(.spring()) {
@@ -128,7 +128,7 @@ struct FlipCardView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.black) // Match Android dark theme
+        .background(Color.white) // Match Android dark theme
         .overlay(
             showCircleAnimation ? CircleAnimationOverlay() : nil
         )
@@ -138,9 +138,9 @@ struct FlipCardView: View {
                 Button(action: onBack) {
                     HStack {
                         Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
+                            .foregroundColor(.gray)
                         Text("返回")
-                            .foregroundColor(.white)
+                            .foregroundColor(.gray)
                     }
                 }
             }
@@ -221,30 +221,27 @@ struct FrontCardView: View {
     let sentenceIndex: Int?
     
     var body: some View {
-        VStack(spacing: 20) {
+        // The parent VStack centers its content vertically by default.
+        VStack(spacing: 35) { // Controls the space between the word and sentence
+            
             // Word display
             Text(word)
                 .font(.system(size: 48, weight: .bold))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
-            
+                .padding(.horizontal)
+
             // Sentence display (if available)
-            if let sentence = sentence {
-                Spacer()
+            if let sentence = sentence, !sentence.isEmpty {
                 Text(sentence)
-                    .font(.body)
+                    .font(.title3)
                     .foregroundColor(.white.opacity(0.8))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
-            } else {
-                // Debug: Show when no sentence
-                Text("(No sentence available)")
-                    .font(.caption)
-                    .foregroundColor(.gray)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(red: 0.17, green: 0.17, blue: 0.17)) // Match Android color #2B2B2B
+        .frame(maxWidth: .infinity, maxHeight: .infinity) // Fills the card
+        .background(Color(red: 0.17, green: 0.17, blue: 0.17))
         .cornerRadius(24)
         .padding()
     }
@@ -317,10 +314,10 @@ struct IconTextButton: View {
             VStack(spacing: 4) {
                 Image(systemName: iconName)
                     .font(.title2)
-                    .foregroundColor(.white)
+                    .foregroundColor(.gray)
                 Text(label)
                     .font(.caption)
-                    .foregroundColor(.white)
+                    .foregroundColor(.gray)
             }
         }
     }

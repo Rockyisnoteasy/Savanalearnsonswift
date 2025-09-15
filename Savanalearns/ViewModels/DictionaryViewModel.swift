@@ -112,6 +112,45 @@ class DictionaryViewModel: ObservableObject {
         return chineseDefinitionExtractor.simplify(definition: fullDefinition)
     }
     
+    func getRandomEnglishSentence(for word: String) -> (String, Int?)? {
+        // 1. Use the pre-loaded map to find the entry for the word.
+        guard let entry = wordMap[word.lowercased()],
+              let sentencesText = entry.sentence, !sentencesText.isEmpty else {
+            // No entry or no sentences for this word.
+            return nil
+        }
+
+        // 2. Replicate the Kotlin logic: split by lines and find English sentences.
+        let englishSentences = sentencesText.split(separator: "\n").compactMap { line -> String? in
+            let trimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            if trimmedLine.uppercased().starts(with: "EN") {
+                // Find the sentence part after the "EN...-" prefix
+                if let range = trimmedLine.range(of: "-") {
+                    return String(trimmedLine[range.upperBound...]).trimmingCharacters(in: .whitespaces)
+                }
+            }
+            return nil
+        }
+
+        // 3. Pick one sentence at random.
+        guard let randomSentence = englishSentences.randomElement() else {
+            return nil
+        }
+        
+        // 4. Find the word's position in the sentence for potential UI highlighting.
+        let wordIndex = findWordIndexInSentence(sentence: randomSentence, word: word)
+        
+        return (randomSentence, wordIndex)
+    }
+
+    
+    private func findWordIndexInSentence(sentence: String, word: String) -> Int? {
+        if let range = sentence.range(of: word, options: .caseInsensitive) {
+            return sentence.distance(from: sentence.startIndex, to: range.lowerBound)
+        }
+        return nil
+    }
+    
     /// Get ultra-simplified Chinese definition for a word
     func getUltraSimplifiedDefinition(for word: String) -> String? {
         guard let simplified = getSimplifiedDefinition(for: word) else { return nil }
@@ -152,13 +191,7 @@ class DictionaryViewModel: ObservableObject {
             return (entry.word, simplifiedDef ?? "...")
         }
     }
-    
-    /// Get random English sentence containing the word
-    func getRandomEnglishSentence(for word: String) -> (String, Int?)? {
-        // TODO: Implement this based on your sentence database
-        // For now, returning nil as placeholder
-        return nil
-    }
+
     
     /// Play word audio and then sentence audio
     func playWordAndThenSentence(_ word: String, _ sentence: String?, context: Any) {
