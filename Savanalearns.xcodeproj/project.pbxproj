@@ -1,0 +1,944 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		960EA1682E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15E2E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db */; };
+		960EA1692E73F5E500AB2E5A /* 考研冲刺十天4596词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA14F2E73F5E500AB2E5A /* 考研冲刺十天4596词.db */; };
+		960EA16A2E73F5E500AB2E5A /* 考研词汇核心突破2068词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1502E73F5E500AB2E5A /* 考研词汇核心突破2068词.db */; };
+		960EA16B2E73F5E500AB2E5A /* Wordbooks.json in Resources */ = {isa = PBXBuildFile; fileRef = 960EA13A2E73F5E500AB2E5A /* Wordbooks.json */; };
+		960EA16C2E73F5E500AB2E5A /* 六级十天冲刺1591词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1542E73F5E500AB2E5A /* 六级十天冲刺1591词.db */; };
+		960EA16D2E73F5E500AB2E5A /* 用于进度测试单词表.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1602E73F5E500AB2E5A /* 用于进度测试单词表.db */; };
+		960EA16E2E73F5E500AB2E5A /* GRE高频3000词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1622E73F5E500AB2E5A /* GRE高频3000词.db */; };
+		960EA16F2E73F5E500AB2E5A /* GRE词汇精选6724词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1612E73F5E500AB2E5A /* GRE词汇精选6724词.db */; };
+		960EA1702E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1552E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db */; };
+		960EA1712E73F5E500AB2E5A /* 六级核心高频突破2140词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1532E73F5E500AB2E5A /* 六级核心高频突破2140词.db */; };
+		960EA1722E73F5E500AB2E5A /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1392E73F5E500AB2E5A /* dictionary.db */; };
+		960EA1732E73F5E500AB2E5A /* 高考英语3700词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA14D2E73F5E500AB2E5A /* 高考英语3700词.db */; };
+		960EA1742E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15D2E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db */; };
+		960EA1752E73F5E500AB2E5A /* 雅思标准词汇3216词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15A2E73F5E500AB2E5A /* 雅思标准词汇3216词.db */; };
+		960EA1762E73F5E500AB2E5A /* 托福核心4500词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1582E73F5E500AB2E5A /* 托福核心4500词.db */; };
+		960EA1772E73F5E500AB2E5A /* 托福9070词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1572E73F5E500AB2E5A /* 托福9070词.db */; };
+		960EA1782E73F5E500AB2E5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1652E73F5E500AB2E5A /* Assets.xcassets */; };
+		960EA1792E73F5E500AB2E5A /* 考研大纲词汇5511词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1512E73F5E500AB2E5A /* 考研大纲词汇5511词.db */; };
+		960EA17A2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15B2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db */; };
+		960EA17B2E73F5E500AB2E5A /* WordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1372E73F5E500AB2E5A /* WordEntry.swift */; };
+		960EA17C2E73F5E500AB2E5A /* WordbookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13E2E73F5E500AB2E5A /* WordbookService.swift */; };
+		960EA17D2E73F5E500AB2E5A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA14A2E73F5E500AB2E5A /* LoginView.swift */; };
+		960EA17E2E73F5E500AB2E5A /* SavanalearnsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */; };
+		960EA17F2E73F5E500AB2E5A /* DictionaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1422E73F5E500AB2E5A /* DictionaryViewModel.swift */; };
+		960EA1802E73F5E500AB2E5A /* DictionarySearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1462E73F5E500AB2E5A /* DictionarySearchBarView.swift */; };
+		960EA1812E73F5E500AB2E5A /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1342E73F5E500AB2E5A /* RegisterRequest.swift */; };
+		960EA1822E73F5E500AB2E5A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1472E73F5E500AB2E5A /* HomeView.swift */; };
+		960EA1832E73F5E500AB2E5A /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13D2E73F5E500AB2E5A /* NetworkService.swift */; };
+		960EA1842E73F5E500AB2E5A /* DailySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1322E73F5E500AB2E5A /* DailySession.swift */; };
+		960EA1852E73F5E500AB2E5A /* LearningPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1492E73F5E500AB2E5A /* LearningPlanView.swift */; };
+		960EA1862E73F5E500AB2E5A /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13C2E73F5E500AB2E5A /* DatabaseService.swift */; };
+		960EA1872E73F5E500AB2E5A /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1432E73F5E500AB2E5A /* PlanViewModel.swift */; };
+		960EA1882E73F5E500AB2E5A /* LearningPlanCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1482E73F5E500AB2E5A /* LearningPlanCardView.swift */; };
+		960EA1892E73F5E500AB2E5A /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1362E73F5E500AB2E5A /* UserProfile.swift */; };
+		960EA18A2E73F5E500AB2E5A /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA14B2E73F5E500AB2E5A /* SideMenuView.swift */; };
+		960EA18B2E73F5E500AB2E5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1452E73F5E500AB2E5A /* ContentView.swift */; };
+		960EA18C2E73F5E500AB2E5A /* WordManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13F2E73F5E500AB2E5A /* WordManagementService.swift */; };
+		960EA18D2E73F5E500AB2E5A /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1412E73F5E500AB2E5A /* AuthViewModel.swift */; };
+		960EA18E2E73F5E500AB2E5A /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1332E73F5E500AB2E5A /* Plan.swift */; };
+		960EA18F2E73F5E500AB2E5A /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1352E73F5E500AB2E5A /* TokenResponse.swift */; };
+		960EA1922E7402EC00AB2E5A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1912E73F65300AB2E5A /* String+Extensions.swift */; };
+		96195A442E653A770093292B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 96195A432E653A770093292B /* GRDB */; };
+		966B4ED62E758DF9008891C3 /* SavanalearnsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */; };
+		966B4ED72E758E87008891C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1452E73F5E500AB2E5A /* ContentView.swift */; };
+		966B4ED82E758EA3008891C3 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1332E73F5E500AB2E5A /* Plan.swift */; };
+		966B4ED92E758EA3008891C3 /* RegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1342E73F5E500AB2E5A /* RegisterRequest.swift */; };
+		966B4EDA2E758EA3008891C3 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1362E73F5E500AB2E5A /* UserProfile.swift */; };
+		966B4EDB2E758EA3008891C3 /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1352E73F5E500AB2E5A /* TokenResponse.swift */; };
+		966B4EDC2E758EA3008891C3 /* WordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1372E73F5E500AB2E5A /* WordEntry.swift */; };
+		966B4EDD2E758EA3008891C3 /* DailySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1322E73F5E500AB2E5A /* DailySession.swift */; };
+		966B4EDE2E758EAF008891C3 /* dictionary.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1392E73F5E500AB2E5A /* dictionary.db */; };
+		966B4EDF2E758EB4008891C3 /* Wordbooks.json in Resources */ = {isa = PBXBuildFile; fileRef = 960EA13A2E73F5E500AB2E5A /* Wordbooks.json */; };
+		966B4EE02E758EBD008891C3 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13D2E73F5E500AB2E5A /* NetworkService.swift */; };
+		966B4EE12E758EBD008891C3 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13C2E73F5E500AB2E5A /* DatabaseService.swift */; };
+		966B4EE22E758EBD008891C3 /* WordManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13F2E73F5E500AB2E5A /* WordManagementService.swift */; };
+		966B4EE32E758EBD008891C3 /* WordbookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA13E2E73F5E500AB2E5A /* WordbookService.swift */; };
+		966B4EE42E758EC9008891C3 /* DictionaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1422E73F5E500AB2E5A /* DictionaryViewModel.swift */; };
+		966B4EE52E758EC9008891C3 /* PlanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1432E73F5E500AB2E5A /* PlanViewModel.swift */; };
+		966B4EE62E758EC9008891C3 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1412E73F5E500AB2E5A /* AuthViewModel.swift */; };
+		966B4EE72E758ED4008891C3 /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA14B2E73F5E500AB2E5A /* SideMenuView.swift */; };
+		966B4EE82E758ED4008891C3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA14A2E73F5E500AB2E5A /* LoginView.swift */; };
+		966B4EE92E758ED4008891C3 /* LearningPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1492E73F5E500AB2E5A /* LearningPlanView.swift */; };
+		966B4EEA2E758ED4008891C3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1472E73F5E500AB2E5A /* HomeView.swift */; };
+		966B4EEB2E758ED4008891C3 /* DictionarySearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1462E73F5E500AB2E5A /* DictionarySearchBarView.swift */; };
+		966B4EEC2E758ED4008891C3 /* LearningPlanCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1482E73F5E500AB2E5A /* LearningPlanCardView.swift */; };
+		966B4EED2E758EDA008891C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1652E73F5E500AB2E5A /* Assets.xcassets */; };
+		966B4F2B2E76DBE8008891C3 /* 高考英语3700词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA14D2E73F5E500AB2E5A /* 高考英语3700词.db */; };
+		966B4F2C2E76DBE8008891C3 /* 考研冲刺十天4596词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA14F2E73F5E500AB2E5A /* 考研冲刺十天4596词.db */; };
+		966B4F2D2E76DBE8008891C3 /* 考研词汇核心突破2068词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1502E73F5E500AB2E5A /* 考研词汇核心突破2068词.db */; };
+		966B4F2E2E76DBE8008891C3 /* 考研大纲词汇5511词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1512E73F5E500AB2E5A /* 考研大纲词汇5511词.db */; };
+		966B4F2F2E76DBE8008891C3 /* 六级核心高频突破2140词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1532E73F5E500AB2E5A /* 六级核心高频突破2140词.db */; };
+		966B4F302E76DBE8008891C3 /* 六级十天冲刺1591词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1542E73F5E500AB2E5A /* 六级十天冲刺1591词.db */; };
+		966B4F312E76DBE8008891C3 /* 四级深度记忆核心词1905词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1552E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db */; };
+		966B4F322E76DBE8008891C3 /* 托福9070词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1572E73F5E500AB2E5A /* 托福9070词.db */; };
+		966B4F332E76DBE8008891C3 /* 托福核心4500词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1582E73F5E500AB2E5A /* 托福核心4500词.db */; };
+		966B4F342E76DBE8008891C3 /* 雅思标准词汇3216词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15A2E73F5E500AB2E5A /* 雅思标准词汇3216词.db */; };
+		966B4F352E76DBE8008891C3 /* 雅思词汇胜经6200词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15B2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db */; };
+		966B4F362E76DBE8008891C3 /* 英语专业八级大纲词汇12696词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15D2E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db */; };
+		966B4F372E76DBE8008891C3 /* 英语专业四级大纲词汇8670词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA15E2E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db */; };
+		966B4F382E76DBE8008891C3 /* 用于进度测试单词表.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1602E73F5E500AB2E5A /* 用于进度测试单词表.db */; };
+		966B4F392E76DBE8008891C3 /* GRE词汇精选6724词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1612E73F5E500AB2E5A /* GRE词汇精选6724词.db */; };
+		966B4F3A2E76DBE8008891C3 /* GRE高频3000词.db in Resources */ = {isa = PBXBuildFile; fileRef = 960EA1622E73F5E500AB2E5A /* GRE高频3000词.db */; };
+		966B4F4B2E77100A008891C3 /* FlipCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B4F4A2E770FFF008891C3 /* FlipCardView.swift */; };
+		966B4F4C2E77100A008891C3 /* FlipCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B4F4A2E770FFF008891C3 /* FlipCardView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		96FC81792E5FF5CD001A854E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96FC81612E5FF5CC001A854E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96FC81682E5FF5CC001A854E;
+			remoteInfo = Savanalearns;
+		};
+		96FC81832E5FF5CD001A854E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 96FC81612E5FF5CC001A854E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96FC81682E5FF5CC001A854E;
+			remoteInfo = Savanalearns;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		960EA1322E73F5E500AB2E5A /* DailySession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySession.swift; sourceTree = "<group>"; };
+		960EA1332E73F5E500AB2E5A /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		960EA1342E73F5E500AB2E5A /* RegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequest.swift; sourceTree = "<group>"; };
+		960EA1352E73F5E500AB2E5A /* TokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenResponse.swift; sourceTree = "<group>"; };
+		960EA1362E73F5E500AB2E5A /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		960EA1372E73F5E500AB2E5A /* WordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordEntry.swift; sourceTree = "<group>"; };
+		960EA1392E73F5E500AB2E5A /* dictionary.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = dictionary.db; sourceTree = "<group>"; };
+		960EA13A2E73F5E500AB2E5A /* Wordbooks.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Wordbooks.json; sourceTree = "<group>"; };
+		960EA13C2E73F5E500AB2E5A /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		960EA13D2E73F5E500AB2E5A /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		960EA13E2E73F5E500AB2E5A /* WordbookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordbookService.swift; sourceTree = "<group>"; };
+		960EA13F2E73F5E500AB2E5A /* WordManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordManagementService.swift; sourceTree = "<group>"; };
+		960EA1412E73F5E500AB2E5A /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		960EA1422E73F5E500AB2E5A /* DictionaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryViewModel.swift; sourceTree = "<group>"; };
+		960EA1432E73F5E500AB2E5A /* PlanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewModel.swift; sourceTree = "<group>"; };
+		960EA1452E73F5E500AB2E5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		960EA1462E73F5E500AB2E5A /* DictionarySearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionarySearchBarView.swift; sourceTree = "<group>"; };
+		960EA1472E73F5E500AB2E5A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		960EA1482E73F5E500AB2E5A /* LearningPlanCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningPlanCardView.swift; sourceTree = "<group>"; };
+		960EA1492E73F5E500AB2E5A /* LearningPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningPlanView.swift; sourceTree = "<group>"; };
+		960EA14A2E73F5E500AB2E5A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		960EA14B2E73F5E500AB2E5A /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		960EA14D2E73F5E500AB2E5A /* 高考英语3700词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "高考英语3700词.db"; sourceTree = "<group>"; };
+		960EA14F2E73F5E500AB2E5A /* 考研冲刺十天4596词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "考研冲刺十天4596词.db"; sourceTree = "<group>"; };
+		960EA1502E73F5E500AB2E5A /* 考研词汇核心突破2068词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "考研词汇核心突破2068词.db"; sourceTree = "<group>"; };
+		960EA1512E73F5E500AB2E5A /* 考研大纲词汇5511词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "考研大纲词汇5511词.db"; sourceTree = "<group>"; };
+		960EA1532E73F5E500AB2E5A /* 六级核心高频突破2140词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "六级核心高频突破2140词.db"; sourceTree = "<group>"; };
+		960EA1542E73F5E500AB2E5A /* 六级十天冲刺1591词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "六级十天冲刺1591词.db"; sourceTree = "<group>"; };
+		960EA1552E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "四级深度记忆核心词1905词.db"; sourceTree = "<group>"; };
+		960EA1572E73F5E500AB2E5A /* 托福9070词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "托福9070词.db"; sourceTree = "<group>"; };
+		960EA1582E73F5E500AB2E5A /* 托福核心4500词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "托福核心4500词.db"; sourceTree = "<group>"; };
+		960EA15A2E73F5E500AB2E5A /* 雅思标准词汇3216词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "雅思标准词汇3216词.db"; sourceTree = "<group>"; };
+		960EA15B2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "雅思词汇胜经6200词.db"; sourceTree = "<group>"; };
+		960EA15D2E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "英语专业八级大纲词汇12696词.db"; sourceTree = "<group>"; };
+		960EA15E2E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "英语专业四级大纲词汇8670词.db"; sourceTree = "<group>"; };
+		960EA1602E73F5E500AB2E5A /* 用于进度测试单词表.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "用于进度测试单词表.db"; sourceTree = "<group>"; };
+		960EA1612E73F5E500AB2E5A /* GRE词汇精选6724词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GRE词汇精选6724词.db"; sourceTree = "<group>"; };
+		960EA1622E73F5E500AB2E5A /* GRE高频3000词.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GRE高频3000词.db"; sourceTree = "<group>"; };
+		960EA1652E73F5E500AB2E5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavanalearnsApp.swift; sourceTree = "<group>"; };
+		960EA1912E73F65300AB2E5A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		966B4F4A2E770FFF008891C3 /* FlipCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCardView.swift; sourceTree = "<group>"; };
+		96FC81692E5FF5CC001A854E /* Savanalearns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savanalearns.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		96FC817B2E5FF5CD001A854E /* SavanalearnsTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SavanalearnsTests;
+			sourceTree = "<group>";
+		};
+		96FC81852E5FF5CD001A854E /* SavanalearnsUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SavanalearnsUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96FC81662E5FF5CC001A854E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96195A442E653A770093292B /* GRDB in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC81752E5FF5CD001A854E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC817F2E5FF5CD001A854E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		960EA1382E73F5E500AB2E5A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1322E73F5E500AB2E5A /* DailySession.swift */,
+				960EA1332E73F5E500AB2E5A /* Plan.swift */,
+				960EA1342E73F5E500AB2E5A /* RegisterRequest.swift */,
+				960EA1352E73F5E500AB2E5A /* TokenResponse.swift */,
+				960EA1362E73F5E500AB2E5A /* UserProfile.swift */,
+				960EA1372E73F5E500AB2E5A /* WordEntry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		960EA13B2E73F5E500AB2E5A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1392E73F5E500AB2E5A /* dictionary.db */,
+				960EA13A2E73F5E500AB2E5A /* Wordbooks.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		960EA1402E73F5E500AB2E5A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				960EA13C2E73F5E500AB2E5A /* DatabaseService.swift */,
+				960EA13D2E73F5E500AB2E5A /* NetworkService.swift */,
+				960EA13E2E73F5E500AB2E5A /* WordbookService.swift */,
+				960EA13F2E73F5E500AB2E5A /* WordManagementService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		960EA1442E73F5E500AB2E5A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1412E73F5E500AB2E5A /* AuthViewModel.swift */,
+				960EA1422E73F5E500AB2E5A /* DictionaryViewModel.swift */,
+				960EA1432E73F5E500AB2E5A /* PlanViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		960EA14C2E73F5E500AB2E5A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				966B4F4A2E770FFF008891C3 /* FlipCardView.swift */,
+				960EA1452E73F5E500AB2E5A /* ContentView.swift */,
+				960EA1462E73F5E500AB2E5A /* DictionarySearchBarView.swift */,
+				960EA1472E73F5E500AB2E5A /* HomeView.swift */,
+				960EA1482E73F5E500AB2E5A /* LearningPlanCardView.swift */,
+				960EA1492E73F5E500AB2E5A /* LearningPlanView.swift */,
+				960EA14A2E73F5E500AB2E5A /* LoginView.swift */,
+				960EA14B2E73F5E500AB2E5A /* SideMenuView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		960EA14E2E73F5E500AB2E5A /* 高考 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA14D2E73F5E500AB2E5A /* 高考英语3700词.db */,
+			);
+			path = "高考";
+			sourceTree = "<group>";
+		};
+		960EA1522E73F5E500AB2E5A /* 考研 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA14F2E73F5E500AB2E5A /* 考研冲刺十天4596词.db */,
+				960EA1502E73F5E500AB2E5A /* 考研词汇核心突破2068词.db */,
+				960EA1512E73F5E500AB2E5A /* 考研大纲词汇5511词.db */,
+			);
+			path = "考研";
+			sourceTree = "<group>";
+		};
+		960EA1562E73F5E500AB2E5A /* 四六级 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1532E73F5E500AB2E5A /* 六级核心高频突破2140词.db */,
+				960EA1542E73F5E500AB2E5A /* 六级十天冲刺1591词.db */,
+				960EA1552E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db */,
+			);
+			path = "四六级";
+			sourceTree = "<group>";
+		};
+		960EA1592E73F5E500AB2E5A /* 托福 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1572E73F5E500AB2E5A /* 托福9070词.db */,
+				960EA1582E73F5E500AB2E5A /* 托福核心4500词.db */,
+			);
+			path = "托福";
+			sourceTree = "<group>";
+		};
+		960EA15C2E73F5E500AB2E5A /* 雅思 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA15A2E73F5E500AB2E5A /* 雅思标准词汇3216词.db */,
+				960EA15B2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db */,
+			);
+			path = "雅思";
+			sourceTree = "<group>";
+		};
+		960EA15F2E73F5E500AB2E5A /* 英专 */ = {
+			isa = PBXGroup;
+			children = (
+				960EA15D2E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db */,
+				960EA15E2E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db */,
+			);
+			path = "英专";
+			sourceTree = "<group>";
+		};
+		960EA1632E73F5E500AB2E5A /* GRE */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1602E73F5E500AB2E5A /* 用于进度测试单词表.db */,
+				960EA1612E73F5E500AB2E5A /* GRE词汇精选6724词.db */,
+				960EA1622E73F5E500AB2E5A /* GRE高频3000词.db */,
+			);
+			path = GRE;
+			sourceTree = "<group>";
+		};
+		960EA1642E73F5E500AB2E5A /* Wordbooks */ = {
+			isa = PBXGroup;
+			children = (
+				960EA14E2E73F5E500AB2E5A /* 高考 */,
+				960EA1522E73F5E500AB2E5A /* 考研 */,
+				960EA1562E73F5E500AB2E5A /* 四六级 */,
+				960EA1592E73F5E500AB2E5A /* 托福 */,
+				960EA15C2E73F5E500AB2E5A /* 雅思 */,
+				960EA15F2E73F5E500AB2E5A /* 英专 */,
+				960EA1632E73F5E500AB2E5A /* GRE */,
+			);
+			path = Wordbooks;
+			sourceTree = "<group>";
+		};
+		960EA1672E73F5E500AB2E5A /* Savanalearns */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1382E73F5E500AB2E5A /* Models */,
+				960EA13B2E73F5E500AB2E5A /* Resources */,
+				960EA1402E73F5E500AB2E5A /* Services */,
+				960EA1442E73F5E500AB2E5A /* ViewModels */,
+				960EA14C2E73F5E500AB2E5A /* Views */,
+				960EA1642E73F5E500AB2E5A /* Wordbooks */,
+				960EA1652E73F5E500AB2E5A /* Assets.xcassets */,
+				960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */,
+			);
+			path = Savanalearns;
+			sourceTree = "<group>";
+		};
+		960EA1902E73F5FF00AB2E5A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				960EA1912E73F65300AB2E5A /* String+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		96FC81602E5FF5CC001A854E = {
+			isa = PBXGroup;
+			children = (
+				960EA1902E73F5FF00AB2E5A /* Extensions */,
+				960EA1672E73F5E500AB2E5A /* Savanalearns */,
+				96FC817B2E5FF5CD001A854E /* SavanalearnsTests */,
+				96FC81852E5FF5CD001A854E /* SavanalearnsUITests */,
+				96FC816A2E5FF5CC001A854E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		96FC816A2E5FF5CC001A854E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96FC81692E5FF5CC001A854E /* Savanalearns.app */,
+				96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */,
+				96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		96FC81682E5FF5CC001A854E /* Savanalearns */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96FC818C2E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "Savanalearns" */;
+			buildPhases = (
+				96FC81652E5FF5CC001A854E /* Sources */,
+				96FC81662E5FF5CC001A854E /* Frameworks */,
+				96FC81672E5FF5CC001A854E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Savanalearns;
+			packageProductDependencies = (
+				96195A432E653A770093292B /* GRDB */,
+			);
+			productName = Savanalearns;
+			productReference = 96FC81692E5FF5CC001A854E /* Savanalearns.app */;
+			productType = "com.apple.product-type.application";
+		};
+		96FC81772E5FF5CD001A854E /* SavanalearnsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96FC818F2E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "SavanalearnsTests" */;
+			buildPhases = (
+				96FC81742E5FF5CD001A854E /* Sources */,
+				96FC81752E5FF5CD001A854E /* Frameworks */,
+				96FC81762E5FF5CD001A854E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96FC817A2E5FF5CD001A854E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				96FC817B2E5FF5CD001A854E /* SavanalearnsTests */,
+			);
+			name = SavanalearnsTests;
+			packageProductDependencies = (
+			);
+			productName = SavanalearnsTests;
+			productReference = 96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		96FC81812E5FF5CD001A854E /* SavanalearnsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96FC81922E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "SavanalearnsUITests" */;
+			buildPhases = (
+				96FC817E2E5FF5CD001A854E /* Sources */,
+				96FC817F2E5FF5CD001A854E /* Frameworks */,
+				96FC81802E5FF5CD001A854E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				96FC81842E5FF5CD001A854E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				96FC81852E5FF5CD001A854E /* SavanalearnsUITests */,
+			);
+			name = SavanalearnsUITests;
+			packageProductDependencies = (
+			);
+			productName = SavanalearnsUITests;
+			productReference = 96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96FC81612E5FF5CC001A854E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					96FC81682E5FF5CC001A854E = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					96FC81772E5FF5CD001A854E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 96FC81682E5FF5CC001A854E;
+					};
+					96FC81812E5FF5CD001A854E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 96FC81682E5FF5CC001A854E;
+					};
+				};
+			};
+			buildConfigurationList = 96FC81642E5FF5CC001A854E /* Build configuration list for PBXProject "Savanalearns" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 96FC81602E5FF5CC001A854E;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				96195A422E653A770093292B /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 96FC816A2E5FF5CC001A854E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				96FC81682E5FF5CC001A854E /* Savanalearns */,
+				96FC81772E5FF5CD001A854E /* SavanalearnsTests */,
+				96FC81812E5FF5CD001A854E /* SavanalearnsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		96FC81672E5FF5CC001A854E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966B4F2B2E76DBE8008891C3 /* 高考英语3700词.db in Resources */,
+				966B4F2C2E76DBE8008891C3 /* 考研冲刺十天4596词.db in Resources */,
+				966B4F2D2E76DBE8008891C3 /* 考研词汇核心突破2068词.db in Resources */,
+				966B4F2E2E76DBE8008891C3 /* 考研大纲词汇5511词.db in Resources */,
+				966B4F2F2E76DBE8008891C3 /* 六级核心高频突破2140词.db in Resources */,
+				966B4F302E76DBE8008891C3 /* 六级十天冲刺1591词.db in Resources */,
+				966B4F312E76DBE8008891C3 /* 四级深度记忆核心词1905词.db in Resources */,
+				966B4F322E76DBE8008891C3 /* 托福9070词.db in Resources */,
+				966B4F332E76DBE8008891C3 /* 托福核心4500词.db in Resources */,
+				966B4F342E76DBE8008891C3 /* 雅思标准词汇3216词.db in Resources */,
+				966B4F352E76DBE8008891C3 /* 雅思词汇胜经6200词.db in Resources */,
+				966B4F362E76DBE8008891C3 /* 英语专业八级大纲词汇12696词.db in Resources */,
+				966B4F372E76DBE8008891C3 /* 英语专业四级大纲词汇8670词.db in Resources */,
+				966B4F382E76DBE8008891C3 /* 用于进度测试单词表.db in Resources */,
+				966B4F392E76DBE8008891C3 /* GRE词汇精选6724词.db in Resources */,
+				966B4F3A2E76DBE8008891C3 /* GRE高频3000词.db in Resources */,
+				966B4EDF2E758EB4008891C3 /* Wordbooks.json in Resources */,
+				966B4EED2E758EDA008891C3 /* Assets.xcassets in Resources */,
+				966B4EDE2E758EAF008891C3 /* dictionary.db in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC81762E5FF5CD001A854E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				960EA1682E73F5E500AB2E5A /* 英语专业四级大纲词汇8670词.db in Resources */,
+				960EA1692E73F5E500AB2E5A /* 考研冲刺十天4596词.db in Resources */,
+				960EA16A2E73F5E500AB2E5A /* 考研词汇核心突破2068词.db in Resources */,
+				960EA16B2E73F5E500AB2E5A /* Wordbooks.json in Resources */,
+				960EA16C2E73F5E500AB2E5A /* 六级十天冲刺1591词.db in Resources */,
+				960EA16D2E73F5E500AB2E5A /* 用于进度测试单词表.db in Resources */,
+				960EA16E2E73F5E500AB2E5A /* GRE高频3000词.db in Resources */,
+				960EA16F2E73F5E500AB2E5A /* GRE词汇精选6724词.db in Resources */,
+				960EA1702E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db in Resources */,
+				960EA1712E73F5E500AB2E5A /* 六级核心高频突破2140词.db in Resources */,
+				960EA1722E73F5E500AB2E5A /* dictionary.db in Resources */,
+				960EA1732E73F5E500AB2E5A /* 高考英语3700词.db in Resources */,
+				960EA1742E73F5E500AB2E5A /* 英语专业八级大纲词汇12696词.db in Resources */,
+				960EA1752E73F5E500AB2E5A /* 雅思标准词汇3216词.db in Resources */,
+				960EA1762E73F5E500AB2E5A /* 托福核心4500词.db in Resources */,
+				960EA1772E73F5E500AB2E5A /* 托福9070词.db in Resources */,
+				960EA1782E73F5E500AB2E5A /* Assets.xcassets in Resources */,
+				960EA1792E73F5E500AB2E5A /* 考研大纲词汇5511词.db in Resources */,
+				960EA17A2E73F5E500AB2E5A /* 雅思词汇胜经6200词.db in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC81802E5FF5CD001A854E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		96FC81652E5FF5CC001A854E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				966B4ED82E758EA3008891C3 /* Plan.swift in Sources */,
+				966B4ED92E758EA3008891C3 /* RegisterRequest.swift in Sources */,
+				966B4F4B2E77100A008891C3 /* FlipCardView.swift in Sources */,
+				966B4EE02E758EBD008891C3 /* NetworkService.swift in Sources */,
+				966B4EE12E758EBD008891C3 /* DatabaseService.swift in Sources */,
+				966B4EE22E758EBD008891C3 /* WordManagementService.swift in Sources */,
+				966B4EE32E758EBD008891C3 /* WordbookService.swift in Sources */,
+				966B4EDA2E758EA3008891C3 /* UserProfile.swift in Sources */,
+				966B4EDB2E758EA3008891C3 /* TokenResponse.swift in Sources */,
+				966B4EDC2E758EA3008891C3 /* WordEntry.swift in Sources */,
+				966B4EE42E758EC9008891C3 /* DictionaryViewModel.swift in Sources */,
+				966B4EE52E758EC9008891C3 /* PlanViewModel.swift in Sources */,
+				966B4EE62E758EC9008891C3 /* AuthViewModel.swift in Sources */,
+				966B4EDD2E758EA3008891C3 /* DailySession.swift in Sources */,
+				966B4ED62E758DF9008891C3 /* SavanalearnsApp.swift in Sources */,
+				960EA1922E7402EC00AB2E5A /* String+Extensions.swift in Sources */,
+				966B4ED72E758E87008891C3 /* ContentView.swift in Sources */,
+				966B4EE72E758ED4008891C3 /* SideMenuView.swift in Sources */,
+				966B4EE82E758ED4008891C3 /* LoginView.swift in Sources */,
+				966B4EE92E758ED4008891C3 /* LearningPlanView.swift in Sources */,
+				966B4EEA2E758ED4008891C3 /* HomeView.swift in Sources */,
+				966B4EEB2E758ED4008891C3 /* DictionarySearchBarView.swift in Sources */,
+				966B4EEC2E758ED4008891C3 /* LearningPlanCardView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC81742E5FF5CD001A854E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				960EA17B2E73F5E500AB2E5A /* WordEntry.swift in Sources */,
+				960EA17C2E73F5E500AB2E5A /* WordbookService.swift in Sources */,
+				966B4F4C2E77100A008891C3 /* FlipCardView.swift in Sources */,
+				960EA17D2E73F5E500AB2E5A /* LoginView.swift in Sources */,
+				960EA17E2E73F5E500AB2E5A /* SavanalearnsApp.swift in Sources */,
+				960EA17F2E73F5E500AB2E5A /* DictionaryViewModel.swift in Sources */,
+				960EA1802E73F5E500AB2E5A /* DictionarySearchBarView.swift in Sources */,
+				960EA1812E73F5E500AB2E5A /* RegisterRequest.swift in Sources */,
+				960EA1822E73F5E500AB2E5A /* HomeView.swift in Sources */,
+				960EA1832E73F5E500AB2E5A /* NetworkService.swift in Sources */,
+				960EA1842E73F5E500AB2E5A /* DailySession.swift in Sources */,
+				960EA1852E73F5E500AB2E5A /* LearningPlanView.swift in Sources */,
+				960EA1862E73F5E500AB2E5A /* DatabaseService.swift in Sources */,
+				960EA1872E73F5E500AB2E5A /* PlanViewModel.swift in Sources */,
+				960EA1882E73F5E500AB2E5A /* LearningPlanCardView.swift in Sources */,
+				960EA1892E73F5E500AB2E5A /* UserProfile.swift in Sources */,
+				960EA18A2E73F5E500AB2E5A /* SideMenuView.swift in Sources */,
+				960EA18B2E73F5E500AB2E5A /* ContentView.swift in Sources */,
+				960EA18C2E73F5E500AB2E5A /* WordManagementService.swift in Sources */,
+				960EA18D2E73F5E500AB2E5A /* AuthViewModel.swift in Sources */,
+				960EA18E2E73F5E500AB2E5A /* Plan.swift in Sources */,
+				960EA18F2E73F5E500AB2E5A /* TokenResponse.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC817E2E5FF5CD001A854E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		96FC817A2E5FF5CD001A854E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96FC81682E5FF5CC001A854E /* Savanalearns */;
+			targetProxy = 96FC81792E5FF5CD001A854E /* PBXContainerItemProxy */;
+		};
+		96FC81842E5FF5CD001A854E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 96FC81682E5FF5CC001A854E /* Savanalearns */;
+			targetProxy = 96FC81832E5FF5CD001A854E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		96FC818A2E5FF5CD001A854E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		96FC818B2E5FF5CD001A854E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		96FC818D2E5FF5CD001A854E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.Savanalearns;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		96FC818E2E5FF5CD001A854E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.Savanalearns;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		96FC81902E5FF5CD001A854E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.SavanalearnsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Savanalearns.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Savanalearns";
+			};
+			name = Debug;
+		};
+		96FC81912E5FF5CD001A854E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.SavanalearnsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Savanalearns.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Savanalearns";
+			};
+			name = Release;
+		};
+		96FC81932E5FF5CD001A854E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.SavanalearnsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Savanalearns;
+			};
+			name = Debug;
+		};
+		96FC81942E5FF5CD001A854E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jiajiechang.SavanalearnsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Savanalearns;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96FC81642E5FF5CC001A854E /* Build configuration list for PBXProject "Savanalearns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96FC818A2E5FF5CD001A854E /* Debug */,
+				96FC818B2E5FF5CD001A854E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96FC818C2E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "Savanalearns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96FC818D2E5FF5CD001A854E /* Debug */,
+				96FC818E2E5FF5CD001A854E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96FC818F2E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "SavanalearnsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96FC81902E5FF5CD001A854E /* Debug */,
+				96FC81912E5FF5CD001A854E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96FC81922E5FF5CD001A854E /* Build configuration list for PBXNativeTarget "SavanalearnsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96FC81932E5FF5CD001A854E /* Debug */,
+				96FC81942E5FF5CD001A854E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		96195A422E653A770093292B /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		96195A432E653A770093292B /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 96195A422E653A770093292B /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 96FC81612E5FF5CC001A854E /* Project object */;
+}
