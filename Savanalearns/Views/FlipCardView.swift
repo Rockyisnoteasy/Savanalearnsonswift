@@ -1,58 +1,52 @@
+// Views/FlipCardView.swift
 import SwiftUI
 
 struct FlipCardView: View {
-    // 状态管理
+    let wordList: [String]
+    let isNewWordSession: Bool
+    let plan: Plan?
+    let onSessionComplete: () -> Void
+    let onBack: () -> Void
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var dictionaryViewModel: DictionaryViewModel
-    @State var wordList: [String]
     
     @State private var currentIndex = 0
     @State private var isFlipped = false
-    
-    // 从Kotlin移植过来的状态
-    @State private var currentSentenceInfo: (sentence: String, index: Int?)? = nil
-
-    // 完成后的回调
-    var onSessionComplete: () -> Void
-
-    // 返回操作
-    var onBack: () -> Void
+    @State private var currentSentenceInfo: (String, Int?)? = nil
+    @State private var displayWords: [String] = []
+    @State private var showCircleAnimation = false
     
     var body: some View {
-        if wordList.isEmpty {
-            VStack {
-                Text("正在加载单词...")
-                ProgressView()
-            }
-            .onAppear {
-                // 如果列表为空，直接调用完成回调
-                onSessionComplete()
-            }
-        } else if currentIndex < wordList.count {
-            let word = wordList[currentIndex]
-            
-            VStack {
-                // 顶部进度条
+        VStack {
+            if displayWords.isEmpty {
+                // Empty state - session complete
+                EmptyView()
+                    .onAppear {
+                        onSessionComplete()
+                    }
+            } else if currentIndex < displayWords.count {
+                let word = displayWords[currentIndex]
+                
+                // Progress indicator
                 HStack {
-                    Text("\(currentIndex + 1)/\(wordList.count)")
+                    Text("\(currentIndex + 1)/\(displayWords.count)")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
                     Spacer()
-                    // 暂时放置一个占位符，后续实现熟悉度逻辑
                     Text("熟悉度：○")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
                 }
                 .padding(.horizontal)
                 
                 Spacer()
-
-                // 卡片区域
+                
+                // Flip card
                 ZStack {
-                    // 根据isFlipped状态决定显示正面还是背面
                     if !isFlipped {
                         FrontCardView(
                             word: word,
-                            sentence: currentSentenceInfo?.sentence
+                            sentence: currentSentenceInfo?.0,
+                            sentenceIndex: currentSentenceInfo?.1
                         )
                     } else {
                         BackCardView(
@@ -67,13 +61,32 @@ struct FlipCardView: View {
                         isFlipped.toggle()
                     }
                 }
+                .onLongPressGesture(minimumDuration: 0.5) {
+                    // Mark word as familiar
+                    authViewModel.markWordAsFamiliar(word)
+                    showCircleAnimation = true
+                    
+                    // Remove word from display list
+                    displayWords.remove(at: currentIndex)
+                    
+                    // Adjust index if needed
+                    if currentIndex >= displayWords.count && currentIndex > 0 {
+                        currentIndex = displayWords.count - 1
+                    }
+                    
+                    // Hide animation after delay
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        showCircleAnimation = false
+                    }
+                }
                 
                 Spacer()
-
-                // 底部控制按钮
+                
+                // Bottom control buttons
                 HStack(spacing: 40) {
                     IconTextButton(iconName: "speaker.wave.2.fill", label: "朗读") {
-                        // TODO: 实现朗读逻辑
+                        // Play audio for current word and sentence
+                        playAudio(for: word)
                     }
                     
                     IconTextButton(iconName: "arrow.triangle.2.circlepath", label: "翻面") {
@@ -88,165 +101,208 @@ struct FlipCardView: View {
                 }
                 .padding(.bottom)
             }
-            .padding()
-            .navigationBarBackButtonHidden(true) // 隐藏默认返回按钮
-            .toolbar { // 自定义返回按钮
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: onBack) {
+        }
+        .overlay(
+            // Circle animation overlay for familiar word
+            showCircleAnimation ? CircleAnimationOverlay() : nil
+        )
+        .padding()
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: onBack) {
+                    HStack {
                         Image(systemName: "chevron.left")
                         Text("返回")
                     }
                 }
             }
-            .onAppear {
-                fetchSentenceAndPlayAudio(for: word)
+        }
+        .onAppear {
+            setupSession()
+            if !displayWords.isEmpty {
+                fetchSentenceAndPlayAudio(for: displayWords[0])
             }
+        }
+        .onDisappear {
+            // Stop any playing audio
+            // TODO: Implement audio stop
+        }
+    }
+    
+    private func setupSession() {
+        displayWords = wordList
+        
+        // Start the session in AuthViewModel
+        if let plan = plan {
+            authViewModel.startSession(plan: plan, words: wordList)
         }
     }
     
     private func goToNextWord() {
-        if currentIndex < wordList.count - 1 {
-            // 翻回正面
+        if currentIndex < displayWords.count - 1 {
+            // Reset flip state
             if isFlipped {
                 withAnimation {
                     isFlipped = false
                 }
-                // 延迟一下再切换单词，让用户看到翻转动画
+                // Delay before moving to next word
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     currentIndex += 1
-                    fetchSentenceAndPlayAudio(for: wordList[currentIndex])
+                    fetchSentenceAndPlayAudio(for: displayWords[currentIndex])
                 }
             } else {
                 currentIndex += 1
-                fetchSentenceAndPlayAudio(for: wordList[currentIndex])
+                fetchSentenceAndPlayAudio(for: displayWords[currentIndex])
             }
-            
         } else {
-            // 已经是最后一个单词，结束session
+            // End of session
+            authViewModel.endSession()
             onSessionComplete()
         }
     }
     
     private func fetchSentenceAndPlayAudio(for word: String) {
-        // Kotlin代码中是在后台线程获取例句
-        DispatchQueue.global().async {
+        // Fetch sentence in background
+        Task {
             let sentencePair = dictionaryViewModel.getRandomEnglishSentence(for: word)
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.currentSentenceInfo = sentencePair
-                // TODO: 实现音频播放逻辑
-                // viewModel.playWordAndThenSentence(word, sentenceToPlay, context)
             }
+            
+            // Play audio
+            playAudio(for: word)
         }
+    }
+    
+    private func playAudio(for word: String) {
+        // TODO: Implement actual audio playback
+        dictionaryViewModel.playWordAndThenSentence(
+            word,
+            currentSentenceInfo?.0,
+            context: self
+        )
     }
 }
 
-// 卡片正面
+// Card front view
 struct FrontCardView: View {
     let word: String
     let sentence: String?
-
+    let sentenceIndex: Int?
+    
     var body: some View {
-        VStack {
+        VStack(spacing: 20) {
             Text(word)
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
-
+            
             if let sentence = sentence {
                 Text(sentence)
-                    .font(.title2)
-                    .foregroundColor(.white.opacity(0.8))
+                    .font(.body)
                     .multilineTextAlignment(.center)
-                    .padding()
+                    .padding(.horizontal)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.darkGray))
-        .cornerRadius(24)
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(20)
     }
 }
 
-// 卡片背面
+// Card back view
 struct BackCardView: View {
     let fullDefinition: String
-    let shortDefinition: String
-    @State private var expanded = false
-
+    let shortDefinition: String?
+    
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading) {
-                Text(expanded ? fullDefinition : shortDefinition)
-                    .font(.body)
-                    .foregroundColor(.white)
-                    .padding()
-
-                if !expanded {
-                    Button(action: { expanded = true }) {
-                        Text("↓ 展开全部释义")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding(.bottom)
+            VStack(alignment: .leading, spacing: 16) {
+                if let short = shortDefinition {
+                    Text("简化释义")
+                        .font(.headline)
+                    Text(short)
+                        .font(.body)
+                    
+                    Divider()
                 }
+                
+                Text("完整释义")
+                    .font(.headline)
+                Text(fullDefinition)
+                    .font(.body)
             }
+            .padding()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.darkGray))
-        .cornerRadius(24)
-        .rotation3DEffect(Angle(degrees: 180), axis: (x: 0, y: 1, z: 0)) // 背面内容需要翻转回来
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(20)
     }
 }
 
-// 底部带图标的按钮
+// Helper button component
 struct IconTextButton: View {
     let iconName: String
     let label: String
     let action: () -> Void
     
     var body: some View {
-        VStack {
-            Button(action: action) {
+        Button(action: action) {
+            VStack(spacing: 4) {
                 Image(systemName: iconName)
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                    .frame(width: 64, height: 64)
-                    .background(Color.blue)
-                    .clipShape(Circle())
+                    .font(.title2)
+                Text(label)
+                    .font(.caption)
             }
-            Text(label)
-                .font(.caption)
         }
     }
 }
 
-// 翻转动画效果
+// Flip animation effect
 struct FlipEffect: GeometryEffect {
+    @Binding var flipped: Bool
+    var angle: Double
+    let axis: (x: CGFloat, y: CGFloat)
+    
     var animatableData: Double {
         get { angle }
         set { angle = newValue }
     }
     
-    @Binding var flipped: Bool
-    var angle: Double
-    let axis: (x: CGFloat, y: CGFloat)
-    
     func effectValue(size: CGSize) -> ProjectionTransform {
-        // 移除 DispatchQueue.main.async 的副作用
-        // 让 `isFlipped` 状态的改变驱动视图，而不是反过来
-        // isFlipped 的值由 onTapGesture 控制，这里只负责根据角度计算动画
-
-        let a = CGFloat(Angle(degrees: angle).radians)
-
+        DispatchQueue.main.async {
+            self.flipped = self.angle >= 90 && self.angle < 270
+        }
+        
+        let tweakedAngle = flipped ? -180 + angle : angle
+        let a = CGFloat(Angle(degrees: tweakedAngle).radians)
+        
         var transform3d = CATransform3DIdentity
-        transform3d.m34 = -1 / max(size.width, size.height)
-
+        transform3d.m34 = -1/max(size.width, size.height)
         transform3d = CATransform3DRotate(transform3d, a, axis.x, axis.y, 0)
         transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
-
+        
         let affineTransform = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height/2.0))
-
+        
         return ProjectionTransform(transform3d).concatenating(affineTransform)
+    }
+}
+
+// Circle animation overlay for familiar word
+struct CircleAnimationOverlay: View {
+    @State private var scale: CGFloat = 0.5
+    @State private var opacity: Double = 1.0
+    
+    var body: some View {
+        Circle()
+            .stroke(Color.green, lineWidth: 3)
+            .scaleEffect(scale)
+            .opacity(opacity)
+            .onAppear {
+                withAnimation(.easeOut(duration: 0.5)) {
+                    scale = 2.0
+                    opacity = 0.0
+                }
+            }
     }
 }

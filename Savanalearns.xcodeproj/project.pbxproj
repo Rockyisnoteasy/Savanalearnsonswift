@@ -152,6 +152,7 @@
 		960EA1652E73F5E500AB2E5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavanalearnsApp.swift; sourceTree = "<group>"; };
 		960EA1912E73F65300AB2E5A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		9664376A2E77C0CF00F5D2D3 /* ChineseDefinitionExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseDefinitionExtractor.swift; sourceTree = "<group>"; };
 		966B4F4A2E770FFF008891C3 /* FlipCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCardView.swift; sourceTree = "<group>"; };
 		96FC81692E5FF5CC001A854E /* Savanalearns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savanalearns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -337,6 +338,7 @@
 		960EA1672E73F5E500AB2E5A /* Savanalearns */ = {
 			isa = PBXGroup;
 			children = (
+				966437692E77C0BA00F5D2D3 /* Utils */,
 				960EA1382E73F5E500AB2E5A /* Models */,
 				960EA13B2E73F5E500AB2E5A /* Resources */,
 				960EA1402E73F5E500AB2E5A /* Services */,
@@ -355,6 +357,14 @@
 				960EA1912E73F65300AB2E5A /* String+Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		966437692E77C0BA00F5D2D3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9664376A2E77C0CF00F5D2D3 /* ChineseDefinitionExtractor.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		96FC81602E5FF5CC001A854E = {

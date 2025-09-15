@@ -76,7 +76,7 @@ class DictionaryViewModel: ObservableObject {
             .map { [weak self] text -> [(String, String)] in
                 guard let self = self, !text.isEmpty else { return [] }
                 
-                // **FIXED**: Use the new String extension here
+                // Use the String extension to check for Chinese characters
                 if text.containsChineseCharacters {
                     return self.queryByChineseKeyword(keyword: text)
                 } else {
@@ -104,6 +104,24 @@ class DictionaryViewModel: ObservableObject {
         
         // Return nil if nothing is found, letting the UI decide what to display
         return nil
+    }
+    
+    /// Get simplified Chinese definition for a word
+    func getSimplifiedDefinition(for word: String) -> String? {
+        guard let fullDefinition = getDefinition(for: word) else { return nil }
+        return chineseDefinitionExtractor.simplify(definition: fullDefinition)
+    }
+    
+    /// Get ultra-simplified Chinese definition for a word
+    func getUltraSimplifiedDefinition(for word: String) -> String? {
+        guard let simplified = getSimplifiedDefinition(for: word) else { return nil }
+        return chineseDefinitionExtractor.ultraSimplify(simplifiedDefinition: simplified)
+    }
+    
+    /// Get extracted Chinese definition (without simplification)
+    func getExtractedDefinition(for word: String) -> String? {
+        guard let fullDefinition = getDefinition(for: word) else { return nil }
+        return chineseDefinitionExtractor.extract(definition: fullDefinition)
     }
 
     /// Provides search suggestions for an English keyword prefix.
@@ -134,28 +152,40 @@ class DictionaryViewModel: ObservableObject {
             return (entry.word, simplifiedDef ?? "...")
         }
     }
+    
+    /// Get random English sentence containing the word
+    func getRandomEnglishSentence(for word: String) -> (String, Int?)? {
+        // TODO: Implement this based on your sentence database
+        // For now, returning nil as placeholder
+        return nil
+    }
+    
+    /// Play word audio and then sentence audio
+    func playWordAndThenSentence(_ word: String, _ sentence: String?, context: Any) {
+        // TODO: Implement audio playback logic
+        // This would use AVFoundation or similar audio framework
+    }
+    
+    /// Get random distractor words for multiple choice tests
+    func getRandomDistractorWords(_ correctWord: String, count: Int = 3) -> [String] {
+        let allWords = Array(wordMap.keys)
+        let filtered = allWords.filter { $0 != correctWord.lowercased() }
+        return Array(filtered.shuffled().prefix(count))
+    }
+    
+    /// Get random distractor definitions for multiple choice tests
+    func getRandomDistractorDefinitions(_ word: String, count: Int = 3) -> [String] {
+        let correctDef = getDefinition(for: word)
+        let allDefinitions = wordMap.values.compactMap { entry -> String? in
+            entry.definition != correctDef ? entry.definition : nil
+        }
+        return Array(allDefinitions.shuffled().prefix(count))
+    }
 }
 
-
-// MARK: - Chinese Definition Extractor Utility
-
-// You can move this to its own file in a `Utils` group later for better organization.
-class ChineseDefinitionExtractor {
-    func simplify(definition: String?) -> String? {
-        guard let def = definition else { return nil }
-        
-        // This logic is a direct Swift translation of your Kotlin version.
-        guard let startRange = def.range(of: "中文释义：") else { return nil }
-        
-        var chinesePart = def[startRange.upperBound...]
-        
-        if let endRange = chinesePart.range(of: "词性：") {
-            chinesePart = chinesePart[..<endRange.lowerBound]
-        }
-        
-        return chinesePart
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .components(separatedBy: .newlines).first?
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+// String extension for Chinese character detection
+extension String {
+    var containsChineseCharacters: Bool {
+        return self.range(of: "\\p{Han}", options: .regularExpression) != nil
     }
 }

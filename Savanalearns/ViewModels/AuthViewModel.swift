@@ -97,4 +97,65 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func startSession(plan: Plan, words: [String]) {
+        currentTestPlanId = plan.id
+        currentTestWords = words
+        print("🚀 [AuthViewModel] Session started for planId: \(plan.id) with \(words.count) words.")
+    }
+    
+    /// Process a test answer for a single word
+    /// This updates the word status on the backend
+    func processTestAnswer(word: String, isCorrect: Bool, testType: String) {
+        guard let planId = currentTestPlanId else {
+            print("❌ [AuthViewModel] Error: currentTestPlanId is null. Cannot process answer.")
+            return
+        }
+        
+        Task {
+            guard let token = self.token else {
+                print("❌ [AuthViewModel] Token is null. Cannot process answer.")
+                return
+            }
+            
+            print("⬆️ [AuthViewModel] Submitting answer for '\(word)'. Correct: \(isCorrect), Test: '\(testType)'")
+            
+            do {
+                // Call your network service to update word status
+                // This would be similar to the Kotlin updateWordStatus call
+                try await networkService.updateWordStatus(
+                    planId: planId,
+                    word: word,
+                    isCorrect: isCorrect,
+                    testType: testType,
+                    token: token
+                )
+                
+                print("✅ [AuthViewModel] Successfully updated status for '\(word)'")
+                
+                // Optionally refresh the session or progress
+                fetchDailySession(for: planId)
+                
+            } catch {
+                print("❌ [AuthViewModel] Failed to update word status for '\(word)': \(error)")
+            }
+        }
+    }
+    
+    /// Mark a word as familiar (used in FlipCard long press)
+    func markWordAsFamiliar(_ word: String) {
+        familiarWords.insert(word.lowercased())
+        
+        // Also update on backend if there's an active session
+        if let planId = currentTestPlanId {
+            processTestAnswer(word: word, isCorrect: true, testType: "familiar")
+        }
+    }
+    
+    /// Clear the current session
+    func endSession() {
+        currentTestPlanId = nil
+        currentTestWords = []
+        print("🏁 [AuthViewModel] Session ended.")
+    }
 }

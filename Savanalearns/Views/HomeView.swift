@@ -5,81 +5,208 @@ struct HomeView: View {
     @ObservedObject var authViewModel: AuthViewModel
     @StateObject private var dictionaryViewModel = DictionaryViewModel()
 
-    // 1. 新增状态变量，用于控制导航和传递数据
+    // Navigation and session state
     @State private var showFlipCard = false
     @State private var wordsForCurrentSession: [String] = []
     @State private var currentPlanForTest: Plan? = nil
-    // 跟踪是新学还是复习
     @State private var isNewWordSession: Bool = true
-
+    
+    // Test sequence states (for future implementation)
+    @State private var showTestSequence = false
+    @State private var currentTestIndex = 0
+    @State private var testResults: [TestResult] = []
 
     var body: some View {
-        // 2. 使用 ScrollView 包含所有内容
         ScrollView {
             VStack(spacing: 20) {
-                // 3. 将搜索栏放在顶部
+                // Search bar at the top
                 DictionarySearchBarView()
                     .padding(.horizontal)
                 
-                // 4. 修改 LearningPlanView 的调用，传入回调函数
+                // Learning plans with callback handlers
                 LearningPlanView(
                     authViewModel: authViewModel,
                     onStartLearnNew: { plan, words in
-                        print("MainActivity: Starting NEW WORD session for planId=\(plan.id)")
-                        self.currentPlanForTest = plan
-                        self.wordsForCurrentSession = words
-                        self.isNewWordSession = true // 标记为新学 session
-                        // 调用 ViewModel 记录当前会话信息
-                        self.authViewModel.startSession(plan: plan, words: words)
-                        self.showFlipCard = true
+                        startLearningSession(plan: plan, words: words, isNewWords: true)
                     },
                     onStartReview: { plan, words in
-                        print("MainActivity: Starting REVIEW session for planId=\(plan.id)")
-                        self.currentPlanForTest = plan
-                        self.wordsForCurrentSession = words
-                        self.isNewWordSession = false // 标记为复习 session
-                        // 调用 ViewModel 记录当前会话信息
-                        self.authViewModel.startSession(plan: plan, words: words)
-                        self.showFlipCard = true
+                        startLearningSession(plan: plan, words: words, isNewWords: false)
                     }
                 )
                 .padding(.horizontal)
-                
-                //Spacer()
             }
             .padding(.top)
         }
         .background(Color(.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         .navigationTitle("SavanaLearns")
         .navigationBarTitleDisplayMode(.inline)
-        // 5. 将 dictionaryViewModel 注入环境，供子视图使用
         .environmentObject(dictionaryViewModel)
-        // 6. 添加 .fullScreenCover 用于呈现翻牌卡片页面
         .fullScreenCover(isPresented: $showFlipCard) {
-            // 当 showFlipCard 为 true 时，显示这个页面
             NavigationView {
                 FlipCardView(
                     wordList: wordsForCurrentSession,
+                    isNewWordSession: isNewWordSession,
+                    plan: currentPlanForTest,
                     onSessionComplete: {
-                        // 当翻牌学习结束后，关闭页面
-                        // 后续的测试流程将在这里触发
-                        print("翻牌记忆环节结束")
-                        self.showFlipCard = false
+                        handleFlipCardSessionComplete()
                     },
-
                     onBack: {
-                        self.showFlipCard = false
+                        handleFlipCardBack()
                     }
                 )
+                .environmentObject(dictionaryViewModel)
+                .environmentObject(authViewModel)
             }
-            .environmentObject(dictionaryViewModel) // 确保 FlipCardView 也能访问到
         }
+        // Future: Add test sequence presentation
+        .fullScreenCover(isPresented: $showTestSequence) {
+            NavigationView {
+                // TestSequenceView would handle the multiple test types
+                EmptyView() // Placeholder for TestSequenceView
+            }
+        }
+    }
+    
+    // MARK: - Helper Functions
+    
+    private func startLearningSession(plan: Plan, words: [String], isNewWords: Bool) {
+        print("MainActivity: Starting \(isNewWords ? "NEW WORD" : "REVIEW") session for planId=\(plan.id)")
+        
+        // Set up session data
+        currentPlanForTest = plan
+        wordsForCurrentSession = words
+        isNewWordSession = isNewWords
+        
+        // Register session with AuthViewModel
+        authViewModel.startSession(plan: plan, words: words)
+        
+        // Show FlipCard view
+        showFlipCard = true
+    }
+    
+    private func handleFlipCardSessionComplete() {
+        print("翻牌记忆环节结束")
+        
+        // Filter out familiar words
+        let familiarWords = authViewModel.familiarWords
+        let filteredWords = wordsForCurrentSession.filter { word in
+            !familiarWords.contains(word.lowercased())
+        }
+        
+        if isNewWordSession {
+            print("熟词过滤后，本轮测试将包含 \(filteredWords.count) 个单词。")
+            
+            if filteredWords.isEmpty {
+                // All words marked as familiar, skip tests
+                print("所有单词已标记为熟悉，跳过测试")
+                completeSession()
+            } else {
+                // Update words for testing
+                wordsForCurrentSession = filteredWords
+                // Start new word test sequence
+                startTestSequence(isNewWordFlow: true)
+            }
+        } else {
+            print("复习session完成")
+            print("熟词过滤后，复习测试将包含 \(filteredWords.count) 个单词。")
+            
+            if filteredWords.isEmpty {
+                print("所有复习单词已标记为熟悉，跳过测试")
+                completeSession()
+            } else {
+                // Update words for testing
+                wordsForCurrentSession = filteredWords
+                // Start review test sequence
+                startTestSequence(isNewWordFlow: false)
+            }
+        }
+        
+        // Close FlipCard view
+        showFlipCard = false
+    }
+    
+    private func handleFlipCardBack() {
+        // User pressed back button in FlipCard
+        print("用户退出翻牌记忆")
+        
+        // End the session
+        authViewModel.endSession()
+        
+        // Close FlipCard view
+        showFlipCard = false
+    }
+    
+    private func startTestSequence(isNewWordFlow: Bool) {
+        // Define test sequences based on flow type
+        let testSequence: [String]
+        
+        if isNewWordFlow {
+            // New word test sequence (comprehensive)
+            testSequence = [
+                "word_to_meaning_select",     // 以词选意
+                "word_meaning_match",          // 词意匹配
+                "meaning_to_word_select",      // 以意选词
+                "chinese_select",              // 选择填词
+                "chinese_spell",               // 拼写填词
+                "listening_test",              // 听力填词
+                "speech_recognition_test"      // 读词填空
+            ]
+        } else {
+            // Review test sequence (shorter, focused on recall)
+            testSequence = [
+                "chinese_spell",
+                "listening_test",
+                "speech_recognition_test"
+            ]
+        }
+        
+        print("Starting test sequence for \(isNewWordFlow ? "new words" : "review")")
+        print("Test sequence: \(testSequence)")
+        
+        // Reset test state
+        currentTestIndex = 0
+        testResults = []
+        
+        // TODO: Implement test sequence navigation
+        // For now, just log and complete
+        print("TODO: Implement test sequence views")
+        
+        // Temporary: directly complete session
+        completeSession()
+        
+        // When implemented, uncomment:
+        // showTestSequence = true
+    }
+    
+    private func completeSession() {
+        print("Session fully completed")
+        
+        // End the session in AuthViewModel
+        authViewModel.endSession()
+        
+        // Refresh the daily session to update UI
+        if let plan = currentPlanForTest {
+            authViewModel.fetchDailySession(for: plan.id)
+        }
+        
+        // Reset session variables
+        currentPlanForTest = nil
+        wordsForCurrentSession = []
+        isNewWordSession = true
     }
 }
 
+// MARK: - Test Result Structure (for future use)
+struct TestResult {
+    let word: String
+    let testType: String
+    let isCorrect: Bool
+    let userAnswer: String?
+}
+
+// MARK: - Preview Provider
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        // 为了让预览正常工作，需要用 NavigationView 包裹
         NavigationView {
             HomeView(authViewModel: AuthViewModel())
         }
