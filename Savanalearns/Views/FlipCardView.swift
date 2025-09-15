@@ -16,15 +16,24 @@ struct FlipCardView: View {
     @State private var currentSentenceInfo: (String, Int?)? = nil
     @State private var displayWords: [String] = []
     @State private var showCircleAnimation = false
+    @State private var isSessionInitialized = false
     
     var body: some View {
         VStack {
+            
             if displayWords.isEmpty {
-                Text("No words to display")
-                    .onAppear {
-                        print("DEBUG: displayWords is empty, calling onSessionComplete")
-                        onSessionComplete()
-                    }
+                if isSessionInitialized {
+                    // Session is over because all words have been reviewed.
+                    Text("翻牌记忆完成！")
+                        .foregroundColor(.white)
+                        .onAppear {
+                            print("DEBUG: All words processed, completing session.")
+                            onSessionComplete()
+                        }
+                } else {
+                    // Show a loading indicator before the session starts.
+                    ProgressView()
+                }
             } else if currentIndex < displayWords.count {
                 let word = displayWords[currentIndex]
                 
@@ -147,6 +156,7 @@ struct FlipCardView: View {
         print("DEBUG: setupSession called with \(wordList.count) words")
         print("DEBUG: Word list: \(wordList)")
         displayWords = wordList
+        isSessionInitialized = true
         
         // Start the session in AuthViewModel
         if let plan = plan {
