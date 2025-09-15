@@ -185,8 +185,8 @@ struct HomeView: View {
         authViewModel.endSession()
         
         // Refresh the daily session to update UI
-        if let plan = currentPlanForTest {
-            authViewModel.fetchDailySession(for: plan.id)
+        if let plan = currentPlanForTest, let planId = plan.id {
+            authViewModel.fetchDailySession(for: planId)
         }
         
         // Reset session variables

@@ -49,6 +49,8 @@
 		960EA18F2E73F5E500AB2E5A /* TokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1352E73F5E500AB2E5A /* TokenResponse.swift */; };
 		960EA1922E7402EC00AB2E5A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1912E73F65300AB2E5A /* String+Extensions.swift */; };
 		96195A442E653A770093292B /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 96195A432E653A770093292B /* GRDB */; };
+		9664376B2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9664376A2E77C0CF00F5D2D3 /* ChineseDefinitionExtractor.swift */; };
+		9664376C2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9664376A2E77C0CF00F5D2D3 /* ChineseDefinitionExtractor.swift */; };
 		966B4ED62E758DF9008891C3 /* SavanalearnsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1662E73F5E500AB2E5A /* SavanalearnsApp.swift */; };
 		966B4ED72E758E87008891C3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1452E73F5E500AB2E5A /* ContentView.swift */; };
 		966B4ED82E758EA3008891C3 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960EA1332E73F5E500AB2E5A /* Plan.swift */; };
@@ -593,6 +595,7 @@
 				966B4EE92E758ED4008891C3 /* LearningPlanView.swift in Sources */,
 				966B4EEA2E758ED4008891C3 /* HomeView.swift in Sources */,
 				966B4EEB2E758ED4008891C3 /* DictionarySearchBarView.swift in Sources */,
+				9664376B2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				966B4EEC2E758ED4008891C3 /* LearningPlanCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -622,6 +625,7 @@
 				960EA18C2E73F5E500AB2E5A /* WordManagementService.swift in Sources */,
 				960EA18D2E73F5E500AB2E5A /* AuthViewModel.swift in Sources */,
 				960EA18E2E73F5E500AB2E5A /* Plan.swift in Sources */,
+				9664376C2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				960EA18F2E73F5E500AB2E5A /* TokenResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

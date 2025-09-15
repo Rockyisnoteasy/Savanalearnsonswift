@@ -28,7 +28,7 @@ class ChineseDefinitionExtractor {
         
         // Split by newlines or numbered items (1. 2. or 1、2、)
         let pattern = #"\n|\r|\d+[\.\、]"#
-        let lines = raw.split(separator: try! Regex(pattern))
+        let lines = raw.split(separator: pattern)
         
         // Process each line
         let processedLines = lines.compactMap { line -> String? in
@@ -42,7 +42,7 @@ class ChineseDefinitionExtractor {
             )
             
             // Split by commas or semicolons and take the first part
-            let parts = processed.split(separator: try! Regex("[,，；;]"))
+            let parts = processed.split(separator: "[,，；;]")
             if let firstPart = parts.first {
                 let result = String(firstPart).trimmingCharacters(in: .whitespacesAndNewlines)
                 return result.isEmpty ? nil : result
@@ -79,20 +79,29 @@ class ChineseDefinitionExtractor {
 
 // Helper extension for Regex splitting (if not already in project)
 extension String {
-    func split(separator: Regex) -> [Substring] {
+    func split(separator: String, options: NSString.CompareOptions = .regularExpression) -> [Substring] {
         var results: [Substring] = []
         var currentIndex = self.startIndex
         
-        let matches = self.matches(of: separator)
-        for match in matches {
-            if currentIndex < match.range.lowerBound {
-                results.append(self[currentIndex..<match.range.lowerBound])
+        do {
+            let regex = try NSRegularExpression(pattern: separator, options: [])
+            let matches = regex.matches(in: self, options: [], range: NSRange(self.startIndex..., in: self))
+            
+            for match in matches {
+                if let range = Range(match.range, in: self) {
+                    if currentIndex < range.lowerBound {
+                        results.append(self[currentIndex..<range.lowerBound])
+                    }
+                    currentIndex = range.upperBound
+                }
             }
-            currentIndex = match.range.upperBound
-        }
-        
-        if currentIndex < self.endIndex {
-            results.append(self[currentIndex..<self.endIndex])
+            
+            if currentIndex < self.endIndex {
+                results.append(self[currentIndex..<self.endIndex])
+            }
+        } catch {
+            // Fallback to simple string splitting if regex fails
+            return self.split(separator: Character(extendedGraphemeClusterLiteral: separator.first ?? " "))
         }
         
         return results

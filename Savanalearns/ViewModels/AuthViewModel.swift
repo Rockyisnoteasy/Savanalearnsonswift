@@ -13,9 +13,12 @@ class AuthViewModel: ObservableObject {
     
     @Published var plans: [Plan] = []
     @Published var dailySessions: [Int: DailySession] = [:]
+    @Published var familiarWords: Set<String> = []
     private var wordManagementService = WordManagementService()
 
     private var networkService = NetworkService()
+    private var currentTestPlanId: Int?
+    private var currentTestWords: [String] = []
 
     func login(email: String, password: String) {
         isLoading = true

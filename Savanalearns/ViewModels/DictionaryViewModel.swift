@@ -183,9 +183,4 @@ class DictionaryViewModel: ObservableObject {
     }
 }
 
-// String extension for Chinese character detection
-extension String {
-    var containsChineseCharacters: Bool {
-        return self.range(of: "\\p{Han}", options: .regularExpression) != nil
-    }
-}
+

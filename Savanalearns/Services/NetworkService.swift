@@ -202,4 +202,39 @@ class NetworkService {
         print("✅ [NetworkService] uploadNewWords: 新词上传成功 (HTTP \(httpResponse.statusCode))")
     }
     
+    func updateWordStatus(planId: Int, word: String, isCorrect: Bool, testType: String, token: String) async throws {
+        struct WordStatusUpdateRequest: Codable {
+            let plan_id: Int
+            let word: String
+            let is_correct: Bool
+            let test_type: String
+        }
+        
+        let payload = WordStatusUpdateRequest(
+            plan_id: planId,
+            word: word,
+            is_correct: isCorrect,
+            test_type: testType
+        )
+        
+        let url = baseURL.appendingPathComponent("word_status")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(payload)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            let errorBody = String(data: data, encoding: .utf8) ?? "无法解码服务器回应"
+            print("❌ [NetworkService] updateWordStatus failed: \(errorBody)")
+            throw URLError(.badServerResponse)
+        }
+        
+        print("✅ [NetworkService] Word status updated successfully")
+    }
+    
 }
