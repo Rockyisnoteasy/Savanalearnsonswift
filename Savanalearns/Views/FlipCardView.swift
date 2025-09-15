@@ -56,27 +56,31 @@ struct FlipCardView: View {
                 
                 // Flip card with proper sizing
                 ZStack {
-                    if !isFlipped {
-                        FrontCardView(
-                            word: word,
-                            sentence: currentSentenceInfo?.0,
-                            sentenceIndex: currentSentenceInfo?.1
-                        )
-                    } else {
-                        BackCardView(
-                            fullDefinition: dictionaryViewModel.getDefinition(for: word) ?? "无释义",
-                            shortDefinition: dictionaryViewModel.getSimplifiedDefinition(for: word)
-                        )
-                    }
+                    // Front of the card
+                    FrontCardView(
+                        word: word,
+                        sentence: currentSentenceInfo?.0,
+                        sentenceIndex: currentSentenceInfo?.1
+                    )
+                    .opacity(isFlipped ? 0 : 1) // Hides the front when flipped
+
+                    // Back of the card, pre-rotated
+                    BackCardView(
+                        fullDefinition: dictionaryViewModel.getDefinition(for: word) ?? "无释义",
+                        shortDefinition: dictionaryViewModel.getSimplifiedDefinition(for: word)
+                    )
+                    .rotation3DEffect(.degrees(180), axis: (x: 0.0, y: 1.0, z: 0.0))
+                    .opacity(isFlipped ? 1 : 0) // Shows the back when flipped
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 400) // Fixed height to ensure visibility
-                .modifier(FlipEffect(flipped: $isFlipped, angle: isFlipped ? 180 : 0, axis: (x: 0, y: 1)))
+                .frame(height: 400)
+                .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0.0, y: 1.0, z: 0.0))
                 .onTapGesture {
                     withAnimation(.spring()) {
                         isFlipped.toggle()
                     }
                 }
+                
                 .onLongPressGesture(minimumDuration: 0.5) {
                     // Mark word as familiar
                     print("DEBUG: Marking '\(word)' as familiar")
@@ -250,7 +254,8 @@ struct FrontCardView: View {
 struct BackCardView: View {
     let fullDefinition: String
     let shortDefinition: String?
-    
+    @State private var showFullDefinition = false // Controls visibility
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
@@ -264,14 +269,33 @@ struct BackCardView: View {
                     
                     Divider()
                         .background(Color.white.opacity(0.3))
+                        .padding(.bottom, 5)
                 }
                 
-                Text("完整释义")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                Text(fullDefinition)
-                    .font(.body)
-                    .foregroundColor(.white.opacity(0.9))
+                if showFullDefinition {
+                    Text("完整释义")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                    Text(fullDefinition)
+                        .font(.body)
+                        .foregroundColor(.white.opacity(0.9))
+                } else {
+                    // Button to reveal the full definition
+                    Button(action: {
+                        withAnimation { showFullDefinition = true }
+                    }) {
+                        HStack {
+                            Spacer()
+                            Text("点击查看完整释义")
+                            Image(systemName: "chevron.down.circle")
+                            Spacer()
+                        }
+                        .padding(.vertical, 10)
+                        .foregroundColor(Color.white.opacity(0.7))
+                        .background(Color.white.opacity(0.1))
+                        .cornerRadius(8)
+                    }
+                }
             }
             .padding(20)
         }
@@ -303,34 +327,34 @@ struct IconTextButton: View {
 }
 
 // Flip animation effect
-struct FlipEffect: GeometryEffect {
-    @Binding var flipped: Bool
-    var angle: Double
-    let axis: (x: CGFloat, y: CGFloat)
-    
-    var animatableData: Double {
-        get { angle }
-        set { angle = newValue }
-    }
-    
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        DispatchQueue.main.async {
-            self.flipped = self.angle >= 90 && self.angle < 270
-        }
-        
-        let tweakedAngle = flipped ? -180 + angle : angle
-        let a = CGFloat(Angle(degrees: tweakedAngle).radians)
-        
-        var transform3d = CATransform3DIdentity
-        transform3d.m34 = -1/max(size.width, size.height)
-        transform3d = CATransform3DRotate(transform3d, a, axis.x, axis.y, 0)
-        transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
-        
-        let affineTransform = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height/2.0))
-        
-        return ProjectionTransform(transform3d).concatenating(affineTransform)
-    }
-}
+//struct FlipEffect: GeometryEffect {
+//    @Binding var flipped: Bool
+//    var angle: Double
+//    let axis: (x: CGFloat, y: CGFloat)
+//
+//    var animatableData: Double {
+//        get { angle }
+//        set { angle = newValue }
+//    }
+//
+//    func effectValue(size: CGSize) -> ProjectionTransform {
+//        DispatchQueue.main.async {
+//            self.flipped = self.angle >= 90 && self.angle < 270
+//        }
+//
+//        let tweakedAngle = flipped ? -180 + angle : angle
+//        let a = CGFloat(Angle(degrees: tweakedAngle).radians)
+//
+//        var transform3d = CATransform3DIdentity
+//        transform3d.m34 = -1/max(size.width, size.height)
+//        transform3d = CATransform3DRotate(transform3d, a, axis.x, axis.y, 0)
+//        transform3d = CATransform3DTranslate(transform3d, -size.width/2.0, -size.height/2.0, 0)
+//
+//        let affineTransform = ProjectionTransform(CGAffineTransform(translationX: size.width/2.0, y: size.height/2.0))
+//
+//        return ProjectionTransform(transform3d).concatenating(affineTransform)
+//    }
+//}
 
 // Circle animation overlay for familiar word
 struct CircleAnimationOverlay: View {
