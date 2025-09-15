@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var showTestSequence = false
     @State private var currentTestIndex = 0
     @State private var testResults: [TestResult] = []
+    @State private var wordsToPass: [String] = []
 
     var body: some View {
         ScrollView {
@@ -41,10 +42,11 @@ struct HomeView: View {
         .navigationTitle("SavanaLearns")
         .navigationBarTitleDisplayMode(.inline)
         .environmentObject(dictionaryViewModel)
+        // Future: Add test sequence presentation
         .fullScreenCover(isPresented: $showFlipCard) {
             NavigationView {
                 FlipCardView(
-                    wordList: wordsForCurrentSession,
+                    wordList: wordsToPass,
                     isNewWordSession: isNewWordSession,
                     plan: currentPlanForTest,
                     onSessionComplete: {
@@ -56,13 +58,6 @@ struct HomeView: View {
                 )
                 .environmentObject(dictionaryViewModel)
                 .environmentObject(authViewModel)
-            }
-        }
-        // Future: Add test sequence presentation
-        .fullScreenCover(isPresented: $showTestSequence) {
-            NavigationView {
-                // TestSequenceView would handle the multiple test types
-                EmptyView() // Placeholder for TestSequenceView
             }
         }
     }
@@ -80,18 +75,18 @@ struct HomeView: View {
         // Set up session data
         currentPlanForTest = plan
         wordsForCurrentSession = words
+        wordsToPass = words
         isNewWordSession = isNewWords
         
         print("DEBUG: wordsForCurrentSession set to: \(wordsForCurrentSession)")
         print("DEBUG: About to show FlipCard with words: \(wordsForCurrentSession)")
+        print("DEBUG: About to show FlipCard with words: \(wordsToPass)")
         
         // Register session with AuthViewModel
         authViewModel.startSession(plan: plan, words: words)
         
         // Show FlipCard view
-        DispatchQueue.main.async {
-            self.showFlipCard = true
-        }
+        showFlipCard = true
     }
     
     private func handleFlipCardSessionComplete() {
