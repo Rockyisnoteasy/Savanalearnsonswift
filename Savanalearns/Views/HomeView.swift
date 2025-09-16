@@ -11,6 +11,8 @@ struct HomeView: View {
     @State private var currentPlanForTest: Plan? = nil
     @State private var isNewWordSession: Bool = true
     
+    @State private var flipCardSession: FlipCardSession? = nil
+    
     // Test sequence states (for future implementation)
     @State private var showTestSequence = false
     @State private var currentTestIndex = 0
@@ -43,12 +45,12 @@ struct HomeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .environmentObject(dictionaryViewModel)
         // Future: Add test sequence presentation
-        .fullScreenCover(isPresented: $showFlipCard) {
+        .fullScreenCover(item: $flipCardSession) { session in
             NavigationView {
                 FlipCardView(
-                    wordList: wordsToPass,
-                    isNewWordSession: isNewWordSession,
-                    plan: currentPlanForTest,
+                    wordList: session.words,
+                    isNewWordSession: session.isNewWords,
+                    plan: session.plan,
                     onSessionComplete: {
                         handleFlipCardSessionComplete()
                     },
@@ -63,33 +65,44 @@ struct HomeView: View {
     }
     
     // MARK: - Helper Functions
-    
     private func startLearningSession(plan: Plan, words: [String], isNewWords: Bool) {
         print("DEBUG: startLearningSession called")
         print("DEBUG: Plan: \(plan.planName), isNewWords: \(isNewWords)")
         print("DEBUG: Words received: \(words)")
         print("DEBUG: Words count: \(words.count)")
         
+        guard !words.isEmpty else {
+            print("ERROR: Cannot start session with empty words")
+            return
+        }
+        
         print("MainActivity: Starting \(isNewWords ? "NEW WORD" : "REVIEW") session for planId=\(plan.id)")
         
         // Set up session data
         currentPlanForTest = plan
         wordsForCurrentSession = words
-        wordsToPass = words
+        wordsToPass = words  // Keep this for compatibility
         isNewWordSession = isNewWords
         
         print("DEBUG: wordsForCurrentSession set to: \(wordsForCurrentSession)")
-        print("DEBUG: About to show FlipCard with words: \(wordsForCurrentSession)")
-        print("DEBUG: About to show FlipCard with words: \(wordsToPass)")
         
         // Register session with AuthViewModel
         authViewModel.startSession(plan: plan, words: words)
         
-        // Show FlipCard view
-        showFlipCard = true
+        // Create and set the session object - this will trigger the presentation
+        flipCardSession = FlipCardSession(
+            words: words,
+            plan: plan,
+            isNewWords: isNewWords
+        )
+        
+        print("DEBUG: FlipCardSession created with \(words.count) words")
     }
     
+    
     private func handleFlipCardSessionComplete() {
+        
+        flipCardSession = nil
         print("翻牌记忆环节结束")
         
         // Filter out familiar words
@@ -139,6 +152,7 @@ struct HomeView: View {
         
         // Close FlipCard view
         showFlipCard = false
+        flipCardSession = nil
     }
     
     private func startTestSequence(isNewWordFlow: Bool) {
@@ -197,6 +211,7 @@ struct HomeView: View {
         // Reset session variables
         currentPlanForTest = nil
         wordsForCurrentSession = []
+        wordsToPass = []  // Also reset wordsToPass
         isNewWordSession = true
     }
 }
@@ -207,6 +222,13 @@ struct TestResult {
     let testType: String
     let isCorrect: Bool
     let userAnswer: String?
+}
+
+struct FlipCardSession: Identifiable {
+    let id = UUID()
+    let words: [String]
+    let plan: Plan
+    let isNewWords: Bool
 }
 
 // MARK: - Preview Provider

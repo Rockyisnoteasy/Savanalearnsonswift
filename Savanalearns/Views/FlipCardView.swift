@@ -236,8 +236,8 @@ struct FrontCardView: View {
                 Text(sentence)
                     .font(.title3)
                     .foregroundColor(.white.opacity(0.8))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
+                    .multilineTextAlignment(.leading)
+                    .padding(.horizontal, 10)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // Fills the card
