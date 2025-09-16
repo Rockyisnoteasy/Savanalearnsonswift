@@ -142,6 +142,26 @@ class DictionaryViewModel: ObservableObject {
         
         return (randomSentence, wordIndex)
     }
+    
+    // MARK: - Helper Methods for Testing
+    func getRandomDefinitions(excluding word: String, count: Int) -> [String] {
+        // Get all words from wordMap except the current one
+        let allWords = Array(wordMap.keys).filter {
+            $0.lowercased() != word.lowercased()
+        }
+        
+        // Randomly select 'count' words and get their FULL definitions
+        let selectedWords = allWords.shuffled().prefix(count)
+        
+        return selectedWords.compactMap { selectedWord in
+            // Get the FULL definition for each selected word
+            // Then apply simplification using ChineseDefinitionExtractor
+            if let fullDef = getDefinition(for: selectedWord) {
+                return chineseDefinitionExtractor.simplify(definition: fullDef)
+            }
+            return nil
+        }
+    }
 
     
     private func findWordIndexInSentence(sentence: String, word: String) -> Int? {

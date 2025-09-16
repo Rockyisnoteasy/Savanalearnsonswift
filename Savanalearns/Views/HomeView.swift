@@ -4,6 +4,8 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject var authViewModel: AuthViewModel
     @StateObject private var dictionaryViewModel = DictionaryViewModel()
+    
+    @StateObject private var testCoordinator: TestCoordinator
 
     // Navigation and session state
     @State private var showFlipCard = false
@@ -13,11 +15,21 @@ struct HomeView: View {
     
     @State private var flipCardSession: FlipCardSession? = nil
     
-    // Test sequence states (for future implementation)
-    @State private var showTestSequence = false
-    @State private var currentTestIndex = 0
-    @State private var testResults: [TestResult] = []
+    @State private var activeTestType: TestType? = nil
+    @State private var showingTestResults = false
+    
     @State private var wordsToPass: [String] = []
+    
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
+        // Initialize TestCoordinator with dependencies
+        let dictionaryVM = DictionaryViewModel()
+        self._dictionaryViewModel = StateObject(wrappedValue: dictionaryVM)
+        self._testCoordinator = StateObject(wrappedValue: TestCoordinator(
+            authViewModel: authViewModel,
+            dictionaryViewModel: dictionaryVM
+        ))
+    }
 
     var body: some View {
         ScrollView {
@@ -60,6 +72,44 @@ struct HomeView: View {
                 )
                 .environmentObject(dictionaryViewModel)
                 .environmentObject(authViewModel)
+            }
+        }
+        
+        .fullScreenCover(item: $activeTestType) { testType in
+            NavigationView {
+                testViewForType(testType)
+                    .environmentObject(dictionaryViewModel)
+                    .environmentObject(authViewModel)
+            }
+        }
+        
+        .fullScreenCover(isPresented: $showingTestResults) {
+            NavigationView {
+                TestResultsView(
+                    testCoordinator: testCoordinator,
+                    onComplete: {
+                        showingTestResults = false
+                        completeSession()
+                    },
+                    onRetry: {
+                        showingTestResults = false
+                        testCoordinator.retryFailedWords()
+                    }
+                )
+            }
+        }
+
+        .onChange(of: testCoordinator.currentSession?.currentTestType) { newTestType in
+            // Update the active test type to trigger view presentation
+            if testCoordinator.isTestActive && !testCoordinator.showingResults {
+                activeTestType = newTestType
+            }
+        }
+        // ADD THIS OBSERVER FOR RESULTS:
+        .onChange(of: testCoordinator.showingResults) { showingResults in
+            if showingResults {
+                activeTestType = nil  // Dismiss current test
+                showingTestResults = true
             }
         }
     }
@@ -156,49 +206,24 @@ struct HomeView: View {
     }
     
     private func startTestSequence(isNewWordFlow: Bool) {
-        // Define test sequences based on flow type
-        let testSequence: [String]
-        
-        if isNewWordFlow {
-            // New word test sequence (comprehensive)
-            testSequence = [
-                "word_to_meaning_select",     // 以词选意
-                "word_meaning_match",          // 词意匹配
-                "meaning_to_word_select",      // 以意选词
-                "chinese_select",              // 选择填词
-                "chinese_spell",               // 拼写填词
-                "listening_test",              // 听力填词
-                "speech_recognition_test"      // 读词填空
-            ]
-        } else {
-            // Review test sequence (shorter, focused on recall)
-            testSequence = [
-                "chinese_spell",
-                "listening_test",
-                "speech_recognition_test"
-            ]
-        }
-        
         print("Starting test sequence for \(isNewWordFlow ? "new words" : "review")")
-        print("Test sequence: \(testSequence)")
         
-        // Reset test state
-        currentTestIndex = 0
-        testResults = []
+        // Use TestCoordinator instead of local logic
+        testCoordinator.startTestSession(
+            plan: currentPlanForTest,
+            words: wordsForCurrentSession,
+            isNewWordSession: isNewWordFlow
+        )
         
-        // TODO: Implement test sequence navigation
-        // For now, just log and complete
-        print("TODO: Implement test sequence views")
-        
-        // Temporary: directly complete session
-        completeSession()
-        
-        // When implemented, uncomment:
-        // showTestSequence = true
+        // Navigation will be handled by showing test views
+        // This will be implemented in the next step
     }
     
     private func completeSession() {
         print("Session fully completed")
+        
+        // Cancel any ongoing test session
+        testCoordinator.cancelSession()
         
         // End the session in AuthViewModel
         authViewModel.endSession()
@@ -211,17 +236,82 @@ struct HomeView: View {
         // Reset session variables
         currentPlanForTest = nil
         wordsForCurrentSession = []
-        wordsToPass = []  // Also reset wordsToPass
+        wordsToPass = []
         isNewWordSession = true
     }
-}
-
-// MARK: - Test Result Structure (for future use)
-struct TestResult {
-    let word: String
-    let testType: String
-    let isCorrect: Bool
-    let userAnswer: String?
+    
+    @ViewBuilder
+    private func testViewForType(_ testType: TestType) -> some View {
+        switch testType {
+        case .wordToMeaningSelect:
+            WordToMeaningSelectView(
+                testCoordinator: testCoordinator,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
+        
+        case .wordMeaningMatch:
+            Text("词意匹配 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        
+        case .meaningToWordSelect:
+            Text("以意选词 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        
+        case .chineseToEnglishSelect:
+            Text("选择填词 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        
+        case .chineseToEnglishSpell:
+            Text("拼写填词 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        
+        case .listeningTest:
+            Text("听力填词 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        
+        case .speechRecognitionTest:
+            Text("读词填空 Test - Coming Soon")
+                .navigationBarItems(
+                    leading: Button("Back") {
+                        testCoordinator.cancelSession()
+                        activeTestType = nil
+                    }
+                )
+        }
+    }
 }
 
 struct FlipCardSession: Identifiable {
