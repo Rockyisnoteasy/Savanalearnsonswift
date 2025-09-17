@@ -115,6 +115,8 @@
 		96DAE20D2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */; };
 		96DAE20E2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
 		96DAE20F2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
+		96DAE2122E7AADB30060C23D /* homophones_list.db in Resources */ = {isa = PBXBuildFile; fileRef = 96DAE2112E7AADB30060C23D /* homophones_list.db */; };
+		96DAE2132E7AADB30060C23D /* homophones_list.db in Resources */ = {isa = PBXBuildFile; fileRef = 96DAE2112E7AADB30060C23D /* homophones_list.db */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +192,7 @@
 		96DAE20A2E7A457A0060C23D /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCacheManager.swift; sourceTree = "<group>"; };
 		96DAE2102E7A4AAC0060C23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		96DAE2112E7AADB30060C23D /* homophones_list.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = homophones_list.db; sourceTree = "<group>"; };
 		96FC81692E5FF5CC001A854E /* Savanalearns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savanalearns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,6 +254,7 @@
 		960EA13B2E73F5E500AB2E5A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				96DAE2112E7AADB30060C23D /* homophones_list.db */,
 				960EA1392E73F5E500AB2E5A /* dictionary.db */,
 				960EA13A2E73F5E500AB2E5A /* Wordbooks.json */,
 			);
@@ -582,6 +586,7 @@
 				966B4F312E76DBE8008891C3 /* 四级深度记忆核心词1905词.db in Resources */,
 				966B4F322E76DBE8008891C3 /* 托福9070词.db in Resources */,
 				966B4F332E76DBE8008891C3 /* 托福核心4500词.db in Resources */,
+				96DAE2122E7AADB30060C23D /* homophones_list.db in Resources */,
 				966B4F342E76DBE8008891C3 /* 雅思标准词汇3216词.db in Resources */,
 				966B4F352E76DBE8008891C3 /* 雅思词汇胜经6200词.db in Resources */,
 				966B4F362E76DBE8008891C3 /* 英语专业八级大纲词汇12696词.db in Resources */,
@@ -608,6 +613,7 @@
 				960EA16E2E73F5E500AB2E5A /* GRE高频3000词.db in Resources */,
 				960EA16F2E73F5E500AB2E5A /* GRE词汇精选6724词.db in Resources */,
 				960EA1702E73F5E500AB2E5A /* 四级深度记忆核心词1905词.db in Resources */,
+				96DAE2132E7AADB30060C23D /* homophones_list.db in Resources */,
 				960EA1712E73F5E500AB2E5A /* 六级核心高频突破2140词.db in Resources */,
 				960EA1722E73F5E500AB2E5A /* dictionary.db in Resources */,
 				960EA1732E73F5E500AB2E5A /* 高考英语3700词.db in Resources */,

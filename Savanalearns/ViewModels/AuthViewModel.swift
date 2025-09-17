@@ -19,6 +19,8 @@ class AuthViewModel: ObservableObject {
     private var networkService = NetworkService()
     private var currentTestPlanId: Int?
     private var currentTestWords: [String] = []
+    
+    
 
     func login(email: String, password: String) {
         isLoading = true
