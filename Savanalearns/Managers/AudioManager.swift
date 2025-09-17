@@ -7,6 +7,8 @@ class AudioManager: NSObject {
     private var audioPlayer: AVAudioPlayer?
     private var currentCompletion: (() -> Void)?
     
+    
+    
     private override init() {
         super.init()
         setupAudioSession()

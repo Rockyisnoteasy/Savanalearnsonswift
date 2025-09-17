@@ -1,6 +1,9 @@
 // ViewModels/DictionaryViewModel.swift
 import Foundation
 import Combine
+import AVFoundation
+import CryptoKit
+
 
 @MainActor
 class DictionaryViewModel: ObservableObject {
@@ -215,8 +218,61 @@ class DictionaryViewModel: ObservableObject {
     
     /// Play word audio and then sentence audio
     func playWordAndThenSentence(_ word: String, _ sentence: String?, context: Any) {
-        // TODO: Implement audio playback logic
-        // This would use AVFoundation or similar audio framework
+        guard !word.isEmpty else { return }
+        
+        print("DEBUG: Playing audio for word '\(word)'")
+        
+        // Play word audio first
+        VoiceCacheManager.shared.getOrDownloadWordAudio(word) { wordAudioURL in
+            if let url = wordAudioURL {
+                DispatchQueue.main.async {
+                    // ACTUALLY PLAY THE AUDIO HERE
+                    AudioManager.shared.playAudio(from: url) {
+                        print("✅ Word audio finished playing: \(word)")
+                        
+                        // After word audio finishes, play sentence audio if available
+                        if let sentenceText = sentence {
+                            print("DEBUG: Now playing sentence audio")
+                            VoiceCacheManager.shared.getOrDownloadSentenceAudio(sentenceText) { sentenceAudioURL in
+                                if let sentenceURL = sentenceAudioURL {
+                                    DispatchQueue.main.async {
+                                        AudioManager.shared.playAudio(from: sentenceURL) {
+                                            print("✅ Sentence audio finished playing")
+                                        }
+                                    }
+                                } else {
+                                    print("❌ Failed to get sentence audio URL")
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                print("❌ Failed to get word audio URL for: \(word)")
+            }
+        }
+    }
+
+    /// Play word audio only
+    func playWord(_ word: String, completion: (() -> Void)? = nil) {
+        guard !word.isEmpty else {
+            completion?()
+            return
+        }
+        
+        print("DEBUG: Playing single word audio for '\(word)'")
+        
+        VoiceCacheManager.shared.getOrDownloadWordAudio(word) { audioURL in
+            if let url = audioURL {
+                DispatchQueue.main.async {
+                    // ACTUALLY PLAY THE AUDIO HERE
+                    AudioManager.shared.playAudio(from: url, completion: completion)
+                }
+            } else {
+                print("❌ Failed to get audio URL for word: \(word)")
+                completion?()
+            }
+        }
     }
     
     /// Get random distractor words for multiple choice tests
@@ -233,6 +289,74 @@ class DictionaryViewModel: ObservableObject {
             entry.definition != correctDef ? entry.definition : nil
         }
         return Array(allDefinitions.shuffled().prefix(count))
+    }
+    
+    // MARK: - Audio Playback Support
+    @MainActor
+    func playWord(_ word: String, completion: @escaping (Bool) -> Void) async {
+        // Generate MD5 hash for the word (following Python logic)
+        let wordLower = word.lowercased()
+        let fileHash = wordLower.md5() + ".mp3"
+        
+        // Construct the audio URL from CDN with correct base URL
+        let audioURLString = "https://wordsentencevoice.savanalearns.cc/voice_cache/\(fileHash)"
+        
+        guard let audioURL = URL(string: audioURLString) else {
+            print("Invalid audio URL for word: \(word)")
+            completion(false)
+            return
+        }
+        
+        // Check if we have cached audio locally
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let audioCache = documentsPath.appendingPathComponent("audio_cache", isDirectory: true)
+        
+        // Create cache directory if it doesn't exist
+        try? FileManager.default.createDirectory(at: audioCache, withIntermediateDirectories: true)
+        
+        let localAudioFile = audioCache.appendingPathComponent(fileHash)
+        
+        do {
+            var audioData: Data
+            
+            if FileManager.default.fileExists(atPath: localAudioFile.path) {
+                // Use cached audio
+                audioData = try Data(contentsOf: localAudioFile)
+                print("Using cached audio for: \(word)")
+            } else {
+                // Download audio from CDN
+                print("Downloading audio from: \(audioURLString)")
+                let (data, _) = try await URLSession.shared.data(from: audioURL)
+                audioData = data
+                
+                // Cache the audio file
+                try audioData.write(to: localAudioFile)
+                print("Cached audio for: \(word)")
+            }
+            
+            // Play the audio
+            let audioPlayer = try AVAudioPlayer(data: audioData)
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            
+            // Wait for playback to complete
+            DispatchQueue.main.asyncAfter(deadline: .now() + audioPlayer.duration) {
+                completion(true)
+            }
+            
+        } catch {
+            print("Failed to play audio for \(word): \(error)")
+            completion(false)
+        }
+    }
+}
+
+extension String {
+    func md5() -> String {
+        let digest = Insecure.MD5.hash(data: self.data(using: .utf8) ?? Data())
+        return digest.map {
+            String(format: "%02hhx", $0)
+        }.joined()
     }
 }
 

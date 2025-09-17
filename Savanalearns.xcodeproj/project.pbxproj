@@ -101,6 +101,20 @@
 		966D0D032E7925A100D78105 /* WordToMeaningSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D012E79259C00D78105 /* WordToMeaningSelectView.swift */; };
 		966D0D052E792AD400D78105 /* TestResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D042E792AD100D78105 /* TestResultsView.swift */; };
 		966D0D062E792AD400D78105 /* TestResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D042E792AD100D78105 /* TestResultsView.swift */; };
+		966D0D082E79621300D78105 /* WordMeaningMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D072E79621100D78105 /* WordMeaningMatchView.swift */; };
+		966D0D092E79621300D78105 /* WordMeaningMatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D072E79621100D78105 /* WordMeaningMatchView.swift */; };
+		966D0D0B2E7962C700D78105 /* MeaningToWordSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D0A2E7962C500D78105 /* MeaningToWordSelectView.swift */; };
+		966D0D0C2E7962C700D78105 /* MeaningToWordSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D0A2E7962C500D78105 /* MeaningToWordSelectView.swift */; };
+		966D0D0E2E798CB300D78105 /* ChineseToEnglishSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */; };
+		966D0D0F2E798CB300D78105 /* ChineseToEnglishSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */; };
+		966D0D112E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */; };
+		966D0D122E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */; };
+		966D0D142E79AB7700D78105 /* ListeningTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D132E79AB7500D78105 /* ListeningTestView.swift */; };
+		966D0D152E79AB7700D78105 /* ListeningTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D132E79AB7500D78105 /* ListeningTestView.swift */; };
+		96DAE20C2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */; };
+		96DAE20D2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */; };
+		96DAE20E2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
+		96DAE20F2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +182,14 @@
 		966D0CFD2E7912F100D78105 /* TestCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCoordinator.swift; sourceTree = "<group>"; };
 		966D0D012E79259C00D78105 /* WordToMeaningSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordToMeaningSelectView.swift; sourceTree = "<group>"; };
 		966D0D042E792AD100D78105 /* TestResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestResultsView.swift; sourceTree = "<group>"; };
+		966D0D072E79621100D78105 /* WordMeaningMatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordMeaningMatchView.swift; sourceTree = "<group>"; };
+		966D0D0A2E7962C500D78105 /* MeaningToWordSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeaningToWordSelectView.swift; sourceTree = "<group>"; };
+		966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseToEnglishSelectView.swift; sourceTree = "<group>"; };
+		966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseToEnglishSpellView.swift; sourceTree = "<group>"; };
+		966D0D132E79AB7500D78105 /* ListeningTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningTestView.swift; sourceTree = "<group>"; };
+		96DAE20A2E7A457A0060C23D /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCacheManager.swift; sourceTree = "<group>"; };
+		96DAE2102E7A4AAC0060C23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		96FC81692E5FF5CC001A854E /* Savanalearns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savanalearns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -355,6 +377,9 @@
 		960EA1672E73F5E500AB2E5A /* Savanalearns */ = {
 			isa = PBXGroup;
 			children = (
+				960EA1902E73F5FF00AB2E5A /* Extensions */,
+				96DAE2092E7A45610060C23D /* Managers */,
+				96DAE2102E7A4AAC0060C23D /* Info.plist */,
 				966437692E77C0BA00F5D2D3 /* Utils */,
 				960EA1382E73F5E500AB2E5A /* Models */,
 				960EA13B2E73F5E500AB2E5A /* Resources */,
@@ -387,16 +412,29 @@
 		966D0D002E79258D00D78105 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				966D0D132E79AB7500D78105 /* ListeningTestView.swift */,
+				966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */,
+				966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */,
+				966D0D0A2E7962C500D78105 /* MeaningToWordSelectView.swift */,
+				966D0D072E79621100D78105 /* WordMeaningMatchView.swift */,
 				966D0D042E792AD100D78105 /* TestResultsView.swift */,
 				966D0D012E79259C00D78105 /* WordToMeaningSelectView.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		96DAE2092E7A45610060C23D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */,
+				96DAE20A2E7A457A0060C23D /* AudioManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		96FC81602E5FF5CC001A854E = {
 			isa = PBXGroup;
 			children = (
-				960EA1902E73F5FF00AB2E5A /* Extensions */,
 				960EA1672E73F5E500AB2E5A /* Savanalearns */,
 				96FC817B2E5FF5CD001A854E /* SavanalearnsTests */,
 				96FC81852E5FF5CD001A854E /* SavanalearnsUITests */,
@@ -598,16 +636,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				966D0D022E7925A100D78105 /* WordToMeaningSelectView.swift in Sources */,
+				966D0D112E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */,
 				966B4ED82E758EA3008891C3 /* Plan.swift in Sources */,
 				966B4ED92E758EA3008891C3 /* RegisterRequest.swift in Sources */,
 				966B4F4B2E77100A008891C3 /* FlipCardView.swift in Sources */,
+				966D0D142E79AB7700D78105 /* ListeningTestView.swift in Sources */,
 				966B4EE02E758EBD008891C3 /* NetworkService.swift in Sources */,
 				966D0D062E792AD400D78105 /* TestResultsView.swift in Sources */,
+				96DAE20E2E7A49520060C23D /* AudioManager.swift in Sources */,
 				966B4EE12E758EBD008891C3 /* DatabaseService.swift in Sources */,
 				966B4EE22E758EBD008891C3 /* WordManagementService.swift in Sources */,
 				966B4EE32E758EBD008891C3 /* WordbookService.swift in Sources */,
+				96DAE20C2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */,
 				966B4EDA2E758EA3008891C3 /* UserProfile.swift in Sources */,
 				966B4EDB2E758EA3008891C3 /* TokenResponse.swift in Sources */,
+				966D0D0F2E798CB300D78105 /* ChineseToEnglishSelectView.swift in Sources */,
 				966B4EDC2E758EA3008891C3 /* WordEntry.swift in Sources */,
 				966B4EE42E758EC9008891C3 /* DictionaryViewModel.swift in Sources */,
 				966B4EE52E758EC9008891C3 /* PlanViewModel.swift in Sources */,
@@ -620,7 +663,9 @@
 				966B4EE72E758ED4008891C3 /* SideMenuView.swift in Sources */,
 				966B4EE82E758ED4008891C3 /* LoginView.swift in Sources */,
 				966B4EE92E758ED4008891C3 /* LearningPlanView.swift in Sources */,
+				966D0D0B2E7962C700D78105 /* MeaningToWordSelectView.swift in Sources */,
 				966B4EEA2E758ED4008891C3 /* HomeView.swift in Sources */,
+				966D0D092E79621300D78105 /* WordMeaningMatchView.swift in Sources */,
 				966B4EEB2E758ED4008891C3 /* DictionarySearchBarView.swift in Sources */,
 				9664376B2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				966D0CFE2E7912F400D78105 /* TestCoordinator.swift in Sources */,
@@ -633,16 +678,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				966D0D032E7925A100D78105 /* WordToMeaningSelectView.swift in Sources */,
+				966D0D122E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */,
 				960EA17B2E73F5E500AB2E5A /* WordEntry.swift in Sources */,
 				960EA17C2E73F5E500AB2E5A /* WordbookService.swift in Sources */,
 				966B4F4C2E77100A008891C3 /* FlipCardView.swift in Sources */,
+				966D0D152E79AB7700D78105 /* ListeningTestView.swift in Sources */,
 				960EA17D2E73F5E500AB2E5A /* LoginView.swift in Sources */,
 				966D0D052E792AD400D78105 /* TestResultsView.swift in Sources */,
+				96DAE20F2E7A49520060C23D /* AudioManager.swift in Sources */,
 				960EA17E2E73F5E500AB2E5A /* SavanalearnsApp.swift in Sources */,
 				960EA17F2E73F5E500AB2E5A /* DictionaryViewModel.swift in Sources */,
 				960EA1802E73F5E500AB2E5A /* DictionarySearchBarView.swift in Sources */,
+				96DAE20D2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */,
 				960EA1812E73F5E500AB2E5A /* RegisterRequest.swift in Sources */,
 				960EA1822E73F5E500AB2E5A /* HomeView.swift in Sources */,
+				966D0D0E2E798CB300D78105 /* ChineseToEnglishSelectView.swift in Sources */,
 				960EA1832E73F5E500AB2E5A /* NetworkService.swift in Sources */,
 				960EA1842E73F5E500AB2E5A /* DailySession.swift in Sources */,
 				960EA1852E73F5E500AB2E5A /* LearningPlanView.swift in Sources */,
@@ -655,6 +705,8 @@
 				960EA18B2E73F5E500AB2E5A /* ContentView.swift in Sources */,
 				960EA18C2E73F5E500AB2E5A /* WordManagementService.swift in Sources */,
 				960EA18D2E73F5E500AB2E5A /* AuthViewModel.swift in Sources */,
+				966D0D0C2E7962C700D78105 /* MeaningToWordSelectView.swift in Sources */,
+				966D0D082E79621300D78105 /* WordMeaningMatchView.swift in Sources */,
 				960EA18E2E73F5E500AB2E5A /* Plan.swift in Sources */,
 				9664376C2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				966D0CFF2E7912F400D78105 /* TestCoordinator.swift in Sources */,
@@ -813,6 +865,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Savanalearns/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -840,6 +893,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Savanalearns/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

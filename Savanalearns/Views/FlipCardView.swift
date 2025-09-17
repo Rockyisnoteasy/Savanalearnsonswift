@@ -1,5 +1,6 @@
 // Views/FlipCardView.swift
 import SwiftUI
+import AVFoundation
 
 struct FlipCardView: View {
     let wordList: [String]
@@ -106,7 +107,9 @@ struct FlipCardView: View {
                 // Bottom control buttons
                 HStack(spacing: 40) {
                     IconTextButton(iconName: "speaker.wave.2.fill", label: "朗读") {
-                        playAudio(for: word)
+                        Task {
+                            await playWordAndSentence(for: word, sentence: currentSentenceInfo?.0)
+                        }
                     }
                     
                     IconTextButton(iconName: "arrow.triangle.2.circlepath", label: "翻面") {
@@ -143,6 +146,7 @@ struct FlipCardView: View {
                             .foregroundColor(.gray)
                     }
                 }
+                
             }
         }
         .onAppear {
@@ -154,6 +158,7 @@ struct FlipCardView: View {
                 }
             }
         }
+
     }
     
     private func setupSession() {
@@ -199,18 +204,77 @@ struct FlipCardView: View {
                 self.currentSentenceInfo = sentencePair
             }
             
-            // Play audio
-            playAudio(for: word)
+            // Play word audio, then sentence audio
+            await playWordAndSentence(for: word, sentence: sentencePair?.0)
         }
     }
-    
-    private func playAudio(for word: String) {
-        // TODO: Implement actual audio playback
-        dictionaryViewModel.playWordAndThenSentence(
-            word,
-            currentSentenceInfo?.0,
-            context: self
-        )
+
+    private func playWordAndSentence(for word: String, sentence: String?) async {
+        // First play the word audio
+        await dictionaryViewModel.playWord(word) { success in
+            if success {
+                print("✅ Played word audio: \(word)")
+                
+                // After word audio completes, play sentence audio if available
+                if let sentence = sentence {
+                    Task {
+                        await self.playSentenceAudio(sentence)
+                    }
+                }
+            } else {
+                print("❌ Failed to play word audio: \(word)")
+            }
+        }
+    }
+
+    private func playSentenceAudio(_ sentence: String) async {
+        // Generate MD5 hash for the sentence (following the same pattern as word audio)
+        let fileHash = sentence.md5() + ".mp3"
+        
+        // Construct the sentence audio URL from CDN
+        let audioURLString = "https://wordsentencevoice.savanalearns.cc/sentence_voice/\(fileHash)"
+        
+        guard let audioURL = URL(string: audioURLString) else {
+            print("Invalid audio URL for sentence")
+            return
+        }
+        
+        // Check if we have cached audio locally
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let audioCache = documentsPath.appendingPathComponent("sentence_audio_cache", isDirectory: true)
+        
+        // Create cache directory if it doesn't exist
+        try? FileManager.default.createDirectory(at: audioCache, withIntermediateDirectories: true)
+        
+        let localAudioFile = audioCache.appendingPathComponent(fileHash)
+        
+        do {
+            var audioData: Data
+            
+            if FileManager.default.fileExists(atPath: localAudioFile.path) {
+                // Use cached audio
+                audioData = try Data(contentsOf: localAudioFile)
+                print("Using cached sentence audio")
+            } else {
+                // Download audio from CDN
+                print("Downloading sentence audio from: \(audioURLString)")
+                let (data, _) = try await URLSession.shared.data(from: audioURL)
+                audioData = data
+                
+                // Cache the audio file
+                try audioData.write(to: localAudioFile)
+                print("Cached sentence audio")
+            }
+            
+            // Play the audio
+            let audioPlayer = try AVAudioPlayer(data: audioData)
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+            print("✅ Playing sentence audio")
+            
+        } catch {
+            print("Failed to play sentence audio: \(error)")
+        }
     }
 }
 

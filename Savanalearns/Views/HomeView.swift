@@ -258,49 +258,76 @@ struct HomeView: View {
             )
         
         case .wordMeaningMatch:
-            Text("词意匹配 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            WordMeaningMatchView(
+                testCoordinator: testCoordinator,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         
         case .meaningToWordSelect:
-            Text("以意选词 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            MeaningToWordSelectView(
+                testCoordinator: testCoordinator,
+                dictionaryViewModel: dictionaryViewModel,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         
         case .chineseToEnglishSelect:
-            Text("选择填词 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            ChineseToEnglishSelectView(
+                testCoordinator: testCoordinator,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         
         case .chineseToEnglishSpell:
-            Text("拼写填词 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            ChineseToEnglishSpellView(
+                testCoordinator: testCoordinator,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         
         case .listeningTest:
-            Text("听力填词 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            ListeningTestView(
+                testCoordinator: testCoordinator,
+                dictionaryViewModel: dictionaryViewModel,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // Move to next test or show results
+                    activeTestType = nil
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         
         case .speechRecognitionTest:
             Text("读词填空 Test - Coming Soon")
