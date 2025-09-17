@@ -18,6 +18,7 @@ struct FlipCardView: View {
     @State private var displayWords: [String] = []
     @State private var showCircleAnimation = false
     @State private var isSessionInitialized = false
+    @State private var currentAudioPlayer: AVAudioPlayer?
     
     var body: some View {
         VStack {
@@ -151,6 +152,8 @@ struct FlipCardView: View {
         }
         .onAppear {
             print("DEBUG: FlipCardView appeared with \(wordList.count) words")
+            testAudioSystem()
+            setupAudioSession()
             setupSession()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 if !displayWords.isEmpty {
@@ -171,6 +174,38 @@ struct FlipCardView: View {
         if let plan = plan {
             authViewModel.startSession(plan: plan, words: wordList)
         }
+    }
+    
+    private func setupAudioSession() {
+        do {
+            // Configure audio session for playback
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.defaultToSpeaker])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("✅ Audio session configured successfully")
+        } catch {
+            print("❌ Failed to set up audio session: \(error)")
+        }
+    }
+    
+    private func testAudioSystem() {
+        print("=== AUDIO SYSTEM DEBUG ===")
+        
+        // Check audio session
+        let audioSession = AVAudioSession.sharedInstance()
+        print("Audio Category: \(audioSession.category)")
+        print("Audio Mode: \(audioSession.mode)")
+        print("Audio Output Volume: \(audioSession.outputVolume)")
+        print("Available Inputs: \(audioSession.availableInputs?.count ?? 0)")
+        print("Current Route: \(audioSession.currentRoute)")
+        
+        // Check if other audio is playing
+        print("Other Audio Playing: \(audioSession.isOtherAudioPlaying)")
+        
+        // Test with system sound
+        print("Testing system sound...")
+        AudioServicesPlaySystemSound(1016) // This should make a sound
+        
+        print("=== END AUDIO DEBUG ===")
     }
     
     private func goToNextWord() {
@@ -210,72 +245,108 @@ struct FlipCardView: View {
     }
 
     private func playWordAndSentence(for word: String, sentence: String?) async {
-        // First play the word audio
-        await dictionaryViewModel.playWord(word) { success in
-            if success {
-                print("✅ Played word audio: \(word)")
-                
-                // After word audio completes, play sentence audio if available
-                if let sentence = sentence {
-                    Task {
-                        await self.playSentenceAudio(sentence)
-                    }
-                }
-            } else {
-                print("❌ Failed to play word audio: \(word)")
-            }
+        print("DEBUG: Starting audio playback for word: \(word)")
+        
+        // First play word audio
+        await playWordAudio(word)
+        
+        // Then play sentence audio if available
+        if let sentence = sentence {
+            await playSentenceAudio(sentence)
         }
     }
-
-    private func playSentenceAudio(_ sentence: String) async {
-        // Generate MD5 hash for the sentence (following the same pattern as word audio)
-        let fileHash = sentence.md5() + ".mp3"
+    
+    private func playWordAudio(_ word: String) async {
+        print("DEBUG: Playing word audio for: \(word)")
         
-        // Construct the sentence audio URL from CDN
-        let audioURLString = "https://wordsentencevoice.savanalearns.cc/sentence_voice/\(fileHash)"
+        let wordLower = word.lowercased()
+        let fileHash = wordLower.md5() + ".mp3"
+        let audioURLString = "https://wordsentencevoice.savanalearns.cc/voice_cache/\(fileHash)"
         
         guard let audioURL = URL(string: audioURLString) else {
-            print("Invalid audio URL for sentence")
+            print("❌ Invalid audio URL for word: \(word)")
             return
         }
         
-        // Check if we have cached audio locally
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let audioCache = documentsPath.appendingPathComponent("sentence_audio_cache", isDirectory: true)
+        await playAudioFromURL(audioURL, cacheDir: "audio_cache", label: "word")
+    }
+
+    private func playSentenceAudio(_ sentence: String) async {
+        print("DEBUG: Playing sentence audio")
         
-        // Create cache directory if it doesn't exist
-        try? FileManager.default.createDirectory(at: audioCache, withIntermediateDirectories: true)
+        let fileHash = sentence.md5() + ".mp3"
+        let audioURLString = "https://wordsentencevoice.savanalearns.cc/sentence_voice/\(fileHash)"
         
-        let localAudioFile = audioCache.appendingPathComponent(fileHash)
+        guard let audioURL = URL(string: audioURLString) else {
+            print("❌ Invalid audio URL for sentence")
+            return
+        }
         
+        await playAudioFromURL(audioURL, cacheDir: "sentence_audio_cache", label: "sentence")
+    }
+    
+    private func playAudioFromURL(_ audioURL: URL, cacheDir: String, label: String) async {
         do {
+            // Setup paths
+            let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let audioCache = documentsPath.appendingPathComponent(cacheDir, isDirectory: true)
+            
+            // Create cache directory if needed
+            try? FileManager.default.createDirectory(at: audioCache, withIntermediateDirectories: true)
+            
+            let fileName = audioURL.lastPathComponent
+            let localAudioFile = audioCache.appendingPathComponent(fileName)
+            
             var audioData: Data
             
             if FileManager.default.fileExists(atPath: localAudioFile.path) {
-                // Use cached audio
+                print("Using cached \(label) audio")
                 audioData = try Data(contentsOf: localAudioFile)
-                print("Using cached sentence audio")
             } else {
-                // Download audio from CDN
-                print("Downloading sentence audio from: \(audioURLString)")
+                print("Downloading \(label) audio from: \(audioURL.absoluteString)")
                 let (data, _) = try await URLSession.shared.data(from: audioURL)
                 audioData = data
                 
-                // Cache the audio file
+                // Cache the audio
                 try audioData.write(to: localAudioFile)
-                print("Cached sentence audio")
+                print("Cached \(label) audio")
             }
             
-            // Play the audio
-            let audioPlayer = try AVAudioPlayer(data: audioData)
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
-            print("✅ Playing sentence audio")
+            // Play the audio on main thread
+            await MainActor.run {
+                do {
+                    // Stop any currently playing audio
+                    currentAudioPlayer?.stop()
+                    
+                    // Create and configure audio player
+                    let audioPlayer = try AVAudioPlayer(data: audioData)
+                    audioPlayer.prepareToPlay()
+                    
+                    // Store reference to prevent deallocation
+                    currentAudioPlayer = audioPlayer
+                    
+                    // Set volume to maximum
+                    audioPlayer.volume = 1.0
+                    
+                    // Play the audio
+                    let success = audioPlayer.play()
+                    if success {
+                        print("✅ Playing \(label) audio successfully")
+                    } else {
+                        print("❌ Failed to start \(label) audio playback")
+                    }
+                    
+                } catch {
+                    print("❌ Failed to create AVAudioPlayer for \(label): \(error)")
+                }
+            }
             
         } catch {
-            print("Failed to play sentence audio: \(error)")
+            print("❌ Failed to play \(label) audio: \(error)")
         }
     }
+    
+    
 }
 
 // Card front view
@@ -435,3 +506,4 @@ struct CircleAnimationOverlay: View {
             }
     }
 }
+
