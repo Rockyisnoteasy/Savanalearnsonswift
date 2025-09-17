@@ -178,20 +178,32 @@ struct ChineseToEnglishSelectView: View {
             Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
                 .font(.system(size: 48))
                 .foregroundColor(isCorrect ? .green : .red)
-                .scaleEffect(showFeedback ? 1.0 : 0.5)
-                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: showFeedback)
+                .scaleEffect(showFeedback ? 1.2 : 1.0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: showFeedback)
             
-            Text(feedbackMessage)
-                .font(.headline)
-                .foregroundColor(isCorrect ? .green : .red)
-            
-            if !isCorrect {
-                Text("正确答案: \(targetWord)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            VStack(spacing: 8) {
+                Text(feedbackMessage)
+                    .font(.headline)
+                    .foregroundColor(isCorrect ? .green : .red)
+                
+                if !isCorrect {
+                    Text("Correct answer: \(targetWord)")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                }
             }
         }
         .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(isCorrect ? Color.green.opacity(0.1) : Color.red.opacity(0.1))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(isCorrect ? Color.green : Color.red, lineWidth: 1)
+                )
+        )
+        .padding(.horizontal)
     }
     
     private var backButton: some View {

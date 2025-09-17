@@ -16,6 +16,7 @@
 import SwiftUI
 import AVFoundation
 import Combine
+import CryptoKit
 
 struct ListeningTestView: View {
     @ObservedObject var testCoordinator: TestCoordinator
@@ -36,6 +37,24 @@ struct ListeningTestView: View {
     
     // Audio player
     @State private var audioPlayer: AVAudioPlayer?
+    @State private var currentAudioPlayer: AVAudioPlayer?
+    @State private var audioDelegate: AudioPlayerDelegate?
+    
+    // Audio delegate class
+    class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
+        var continuation: CheckedContinuation<Void, Never>?
+        
+        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+            continuation?.resume()
+            continuation = nil
+        }
+        
+        func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+            print("❌ Audio decode error: \(error?.localizedDescription ?? "Unknown")")
+            continuation?.resume()
+            continuation = nil
+        }
+    }
     @State private var playCount = 0
     private let maxPlayCount = 3
     
@@ -291,30 +310,108 @@ struct ListeningTestView: View {
         speakerPulse = true
         audioLoadingError = false
         
-        // Play word audio using DictionaryViewModel
         Task {
-            await dictionaryViewModel.playWord(currentQuestion.word) { success in
-                DispatchQueue.main.async {
-                    self.isPlayingAudio = false
-                    self.speakerPulse = false
+            let success = await playWordAudio(currentQuestion.word)
+            
+            await MainActor.run {
+                self.isPlayingAudio = false
+                self.speakerPulse = false
+                
+                if success {
+                    self.playCount += 1
                     
-                    if success {
-                        self.playCount += 1
-                        
-                        // Auto-focus text field after first play
-                        if self.playCount == 1 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                self.isTextFieldFocused = true
-                            }
+                    // Auto-focus text field after first play
+                    if self.playCount == 1 {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            self.isTextFieldFocused = true
                         }
-                    } else {
-                        self.audioLoadingError = true
                     }
+                } else {
+                    self.audioLoadingError = true
                 }
             }
         }
     }
-    
+
+    private func playWordAudio(_ word: String) async -> Bool {
+        print("DEBUG: Playing word audio for: \(word)")
+        
+        let wordLower = word.lowercased()
+        let fileHash = wordLower.md5() + ".mp3"
+        let audioURLString = "https://wordsentencevoice.savanalearns.cc/voice_cache/\(fileHash)"
+        
+        guard let audioURL = URL(string: audioURLString) else {
+            print("❌ Invalid audio URL for word: \(word)")
+            return false
+        }
+        
+        return await playAudioFromURL(audioURL, cacheDir: "audio_cache")
+    }
+
+    private func playAudioFromURL(_ audioURL: URL, cacheDir: String) async -> Bool {
+        do {
+            // Setup paths
+            let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let audioCache = documentsPath.appendingPathComponent(cacheDir, isDirectory: true)
+            
+            // Create cache directory if needed
+            try? FileManager.default.createDirectory(at: audioCache, withIntermediateDirectories: true)
+            
+            let fileName = audioURL.lastPathComponent
+            let localAudioFile = audioCache.appendingPathComponent(fileName)
+            
+            let audioData: Data
+            
+            if FileManager.default.fileExists(atPath: localAudioFile.path) {
+                print("Using cached audio")
+                audioData = try Data(contentsOf: localAudioFile)
+            } else {
+                print("Downloading audio from: \(audioURL.absoluteString)")
+                let (data, _) = try await URLSession.shared.data(from: audioURL)
+                audioData = data
+                
+                // Cache the audio
+                try audioData.write(to: localAudioFile)
+                print("Cached audio")
+            }
+            
+            // Play audio with proper completion handling
+            let delegate = AudioPlayerDelegate()
+            await withCheckedContinuation { continuation in
+                delegate.continuation = continuation
+                
+                DispatchQueue.main.async {
+                    // Stop any currently playing audio first
+                    self.currentAudioPlayer?.stop()
+                    
+                    do {
+                        let audioPlayer = try AVAudioPlayer(data: audioData)
+                        self.currentAudioPlayer = audioPlayer
+                        self.audioDelegate = delegate
+                        
+                        audioPlayer.delegate = self.audioDelegate
+                        audioPlayer.volume = 1.0
+                        
+                        if audioPlayer.play() {
+                            print("✅ Playing audio successfully")
+                        } else {
+                            print("❌ Failed to start audio playback")
+                            continuation.resume()
+                        }
+                    } catch {
+                        print("❌ Failed to create AVAudioPlayer: \(error)")
+                        continuation.resume()
+                    }
+                }
+            }
+            
+            return true
+            
+        } catch {
+            print("❌ Failed to play audio: \(error)")
+            return false
+        }
+    }
     // MARK: - Logic Methods
     
     private func submitAnswer() {
@@ -390,3 +487,4 @@ struct ListeningTestView: View {
         onComplete()
     }
 }
+
