@@ -145,34 +145,6 @@ class AudioManager: NSObject {
             }
         }
     }
-    
-    // Test audio system with a simple beep
-    func testAudioSystem() {
-        print("\n🔊 Testing audio system...")
-        
-        // Create a simple sine wave tone
-        let sampleRate = 44100.0
-        let frequency = 440.0 // A4 note
-        let duration = 0.5
-        let amplitude: Float = 0.5
-        
-        var audioData = Data()
-        
-        // Generate sine wave
-        for i in 0..<Int(sampleRate * duration) {
-            let sample = amplitude * sinf(Float(2.0 * Double.pi * frequency * Double(i) / sampleRate))
-            var sampleBytes = sample
-            audioData.append(Data(bytes: &sampleBytes, count: MemoryLayout<Float>.size))
-        }
-        
-        do {
-            audioPlayer = try AVAudioPlayer(data: audioData)
-            audioPlayer?.play()
-            print("✅ Test tone should be playing")
-        } catch {
-            print("❌ Cannot play test tone: \(error)")
-        }
-    }
 }
 
 // MARK: - AVAudioPlayerDelegate

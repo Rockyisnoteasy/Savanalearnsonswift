@@ -19,6 +19,22 @@ struct FlipCardView: View {
     @State private var showCircleAnimation = false
     @State private var isSessionInitialized = false
     @State private var currentAudioPlayer: AVAudioPlayer?
+    @State private var audioDelegate: AudioPlayerDelegate?
+    
+    class AudioPlayerDelegate: NSObject, AVAudioPlayerDelegate {
+        var continuation: CheckedContinuation<Void, Never>?
+
+        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+            continuation?.resume()
+            continuation = nil
+        }
+
+        func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+            print("❌ Audio decode error: \(error?.localizedDescription ?? "Unknown")")
+            continuation?.resume()
+            continuation = nil
+        }
+    }
     
     var body: some View {
         VStack {
@@ -152,7 +168,6 @@ struct FlipCardView: View {
         }
         .onAppear {
             print("DEBUG: FlipCardView appeared with \(wordList.count) words")
-            testAudioSystem()
             setupAudioSession()
             setupSession()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -186,27 +201,7 @@ struct FlipCardView: View {
             print("❌ Failed to set up audio session: \(error)")
         }
     }
-    
-    private func testAudioSystem() {
-        print("=== AUDIO SYSTEM DEBUG ===")
-        
-        // Check audio session
-        let audioSession = AVAudioSession.sharedInstance()
-        print("Audio Category: \(audioSession.category)")
-        print("Audio Mode: \(audioSession.mode)")
-        print("Audio Output Volume: \(audioSession.outputVolume)")
-        print("Available Inputs: \(audioSession.availableInputs?.count ?? 0)")
-        print("Current Route: \(audioSession.currentRoute)")
-        
-        // Check if other audio is playing
-        print("Other Audio Playing: \(audioSession.isOtherAudioPlaying)")
-        
-        // Test with system sound
-        print("Testing system sound...")
-        AudioServicesPlaySystemSound(1016) // This should make a sound
-        
-        print("=== END AUDIO DEBUG ===")
-    }
+
     
     private func goToNextWord() {
         if currentIndex < displayWords.count - 1 {
@@ -297,7 +292,7 @@ struct FlipCardView: View {
             let fileName = audioURL.lastPathComponent
             let localAudioFile = audioCache.appendingPathComponent(fileName)
             
-            var audioData: Data
+            let audioData: Data
             
             if FileManager.default.fileExists(atPath: localAudioFile.path) {
                 print("Using cached \(label) audio")
@@ -312,32 +307,34 @@ struct FlipCardView: View {
                 print("Cached \(label) audio")
             }
             
-            // Play the audio on main thread
-            await MainActor.run {
-                do {
-                    // Stop any currently playing audio
-                    currentAudioPlayer?.stop()
+            // This is the new, crucial part that waits for playback to finish.
+            let delegate = AudioPlayerDelegate()
+            await withCheckedContinuation { continuation in
+                delegate.continuation = continuation
+                
+                DispatchQueue.main.async {
+                    // Stop any currently playing audio first
+                    self.currentAudioPlayer?.stop()
                     
-                    // Create and configure audio player
-                    let audioPlayer = try AVAudioPlayer(data: audioData)
-                    audioPlayer.prepareToPlay()
-                    
-                    // Store reference to prevent deallocation
-                    currentAudioPlayer = audioPlayer
-                    
-                    // Set volume to maximum
-                    audioPlayer.volume = 1.0
-                    
-                    // Play the audio
-                    let success = audioPlayer.play()
-                    if success {
-                        print("✅ Playing \(label) audio successfully")
-                    } else {
-                        print("❌ Failed to start \(label) audio playback")
+                    do {
+                        let audioPlayer = try AVAudioPlayer(data: audioData)
+                        self.currentAudioPlayer = audioPlayer // Keep a strong reference
+                        self.audioDelegate = delegate         // Keep a strong reference
+                        
+                        audioPlayer.delegate = self.audioDelegate
+                        audioPlayer.volume = 1.0
+                        
+                        if audioPlayer.play() {
+                            print("✅ Playing \(label) audio successfully")
+                            // We don't resume continuation here. The delegate will do it upon completion.
+                        } else {
+                            print("❌ Failed to start \(label) audio playback")
+                            continuation.resume() // If it fails to start, unblock immediately.
+                        }
+                    } catch {
+                        print("❌ Failed to create AVAudioPlayer for \(label): \(error)")
+                        continuation.resume() // If it fails to create, unblock immediately.
                     }
-                    
-                } catch {
-                    print("❌ Failed to create AVAudioPlayer for \(label): \(error)")
                 }
             }
             
@@ -506,4 +503,3 @@ struct CircleAnimationOverlay: View {
             }
     }
 }
-
