@@ -330,13 +330,20 @@ struct HomeView: View {
             )
         
         case .speechRecognitionTest:
-            Text("读词填空 Test - Coming Soon")
-                .navigationBarItems(
-                    leading: Button("Back") {
-                        testCoordinator.cancelSession()
-                        activeTestType = nil
-                    }
-                )
+            // This test was not fully implemented here yet, let's add it.
+            SpeechRecognitionTestView(
+                testCoordinator: testCoordinator,
+                dictionaryViewModel: dictionaryViewModel,
+                authViewModel: authViewModel,
+                questions: testCoordinator.testQuestions,
+                onComplete: {
+                    // This closure should also be empty.
+                },
+                onBack: {
+                    testCoordinator.cancelSession()
+                    activeTestType = nil
+                }
+            )
         }
     }
 }

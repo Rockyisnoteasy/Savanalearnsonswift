@@ -3,6 +3,7 @@ import Foundation
 import Combine
 import AVFoundation
 import CryptoKit
+import SQLite3
 
 
 @MainActor
@@ -144,6 +145,10 @@ class DictionaryViewModel: ObservableObject {
         let wordIndex = findWordIndexInSentence(sentence: randomSentence, word: word)
         
         return (randomSentence, wordIndex)
+    }
+    
+    func extractChineseDefinition(from fullDefinition: String) -> String? {
+        return chineseDefinitionExtractor.extract(definition: fullDefinition)
     }
     
     // MARK: - Helper Methods for Testing
@@ -349,6 +354,84 @@ class DictionaryViewModel: ObservableObject {
             completion(false)
         }
     }
+    
+    func checkIfHomophones(_ word1: String, _ word2: String) -> Bool {
+        let normalizedWord1 = word1.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalizedWord2 = word2.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // If they're the same word, return true
+        if normalizedWord1 == normalizedWord2 {
+            return true
+        }
+        
+        // Check homophones database
+        return areWordsHomophones(normalizedWord1, normalizedWord2)
+    }
+    
+    /// Query the homophones database
+    private func areWordsHomophones(_ word1: String, _ word2: String) -> Bool {
+        guard let homophonesDB = openHomophonesDatabase() else {
+            print("❌ [Dictionary] Failed to open homophones database")
+            return false
+        }
+        
+        defer {
+            sqlite3_close(homophonesDB)
+        }
+        
+        // Query to check if words are homophones
+        let query = """
+            SELECT COUNT(*) FROM homophones 
+            WHERE (word1 = ? AND word2 = ?) OR (word1 = ? AND word2 = ?)
+        """
+        
+        var statement: OpaquePointer?
+        
+        if sqlite3_prepare_v2(homophonesDB, query, -1, &statement, nil) == SQLITE_OK {
+            // Bind parameters
+            sqlite3_bind_text(statement, 1, word1, -1, nil)
+            sqlite3_bind_text(statement, 2, word2, -1, nil)
+            sqlite3_bind_text(statement, 3, word2, -1, nil)
+            sqlite3_bind_text(statement, 4, word1, -1, nil)
+            
+            if sqlite3_step(statement) == SQLITE_ROW {
+                let count = sqlite3_column_int(statement, 0)
+                sqlite3_finalize(statement)
+                return count > 0
+            }
+        }
+        
+        sqlite3_finalize(statement)
+        return false
+    }
+    
+    /// Open the homophones database
+    private func openHomophonesDatabase() -> OpaquePointer? {
+        var db: OpaquePointer?
+        
+        guard let homophonesPath = Bundle.main.path(forResource: "homophones_list", ofType: "db") else {
+            print("❌ [Dictionary] Homophones database not found in bundle")
+            return nil
+        }
+        
+        if sqlite3_open(homophonesPath, &db) == SQLITE_OK {
+            return db
+        } else {
+            print("❌ [Dictionary] Unable to open homophones database")
+            sqlite3_close(db)
+            return nil
+        }
+    }
+    
+    /// Normalize answer for comparison (matching Kotlin logic)
+    func normalizeAnswer(_ text: String) -> String {
+        return text
+            .lowercased()
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: " ", with: "")
+            .replacingOccurrences(of: "-", with: "")
+    }
+    
 }
 
 extension String {

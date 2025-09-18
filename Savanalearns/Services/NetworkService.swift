@@ -26,6 +26,42 @@ class NetworkService {
 
         return try decoder.decode(TokenResponse.self, from: data)
     }
+    
+    func generateUploadUrl(request: AuthViewModel.GenerateUploadUrlRequest, token: String) async throws -> AuthViewModel.GenerateUploadUrlResponse {
+        let url = baseURL.appendingPathComponent("learning/generate-upload-url")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        urlRequest.httpBody = try JSONEncoder().encode(request)
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        return try decoder.decode(AuthViewModel.GenerateUploadUrlResponse.self, from: data)
+    }
+
+    func recognizeSpeechTransient(request: AuthViewModel.SubmitOssForRecognitionRequest, token: String) async throws -> AuthViewModel.TransientRecognitionResponse {
+        let url = baseURL.appendingPathComponent("learning/recognize-speech-transient")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        urlRequest.httpBody = try JSONEncoder().encode(request)
+        
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        return try decoder.decode(AuthViewModel.TransientRecognitionResponse.self, from: data)
+    }
 
     // 注册方法 (已有)
     func register(email: String, password: String) async throws {

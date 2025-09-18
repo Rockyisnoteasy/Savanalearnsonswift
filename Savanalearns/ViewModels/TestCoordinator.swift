@@ -156,15 +156,16 @@ class TestCoordinator: ObservableObject {
         let chinese: String?
         
         switch testType {
-        case .wordToMeaningSelect:
+        case .wordToMeaningSelect, .speechRecognitionTest:
             // For word to meaning select, use simplified definition not full
             chinese = dictionaryViewModel.getSimplifiedDefinition(for: word)
             
         case .wordMeaningMatch:
             // Use ultra-simplified for matching
             chinese = dictionaryViewModel.getUltraSimplifiedDefinition(for: word)
-            
-        case .meaningToWordSelect, .chineseToEnglishSelect, .chineseToEnglishSpell, .listeningTest, .speechRecognitionTest:
+
+        
+        case .meaningToWordSelect, .chineseToEnglishSelect, .chineseToEnglishSpell, .listeningTest:
             // Use extracted Chinese for these tests
             chinese = dictionaryViewModel.getExtractedDefinition(for: word)
         }
@@ -209,6 +210,23 @@ class TestCoordinator: ObservableObject {
         // Use ultra-simplified for matching tests
         return dictionaryViewModel.getUltraSimplifiedDefinition(for: def)
             ?? String(def.prefix(10))
+    }
+    
+    private func prepareSpeechRecognitionQuestions(for words: [String]) -> [TestQuestion] {
+        return words.compactMap { word in
+            guard let fullDefinition = dictionaryViewModel.getDefinition(for: word),
+                  let chineseMeaning = dictionaryViewModel.getExtractedDefinition(for: word) else {
+                print("⚠️ [TestCoordinator] No Chinese definition found for word: \(word)")
+                return nil
+            }
+            
+            return TestQuestion(
+                word: word,
+                chinese: chineseMeaning,
+                fullDefinition: fullDefinition,
+                additionalData: nil
+            )
+        }
     }
 }
 

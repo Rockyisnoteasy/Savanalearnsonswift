@@ -20,7 +20,98 @@ class AuthViewModel: ObservableObject {
     private var currentTestPlanId: Int?
     private var currentTestWords: [String] = []
     
+    // Add these methods to AuthViewModel class in Savanalearns/ViewModels/AuthViewModel.swift
+
+    func generateUploadUrl(filename: String) async -> (uploadUrl: String, objectKey: String)? {
+        guard let token = self.token else {
+            errorMessage = "Authentication token not found."
+            return nil
+        }
+        
+        let request = GenerateUploadUrlRequest(filename: filename)
+        do {
+            let response = try await networkService.generateUploadUrl(request: request, token: token)
+            print("✅ [AuthViewModel] Got pre-signed URL for \(response.object_key)")
+            return (response.upload_url, response.object_key)
+        } catch {
+            print("❌ [AuthViewModel] Failed to generate upload URL: \(error)")
+            errorMessage = "Could not prepare audio upload."
+            return nil
+        }
+    }
     
+    /// Step 2: Upload the audio file directly to the OSS pre-signed URL.
+    func uploadAudioToOSS(fileURL: URL, uploadURL: String) async -> Bool {
+        do {
+            let audioData = try Data(contentsOf: fileURL)
+            
+            guard let url = URL(string: uploadURL) else {
+                print("❌ [AuthViewModel] Invalid pre-signed URL.")
+                return false
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            // The content type must match what the backend expects for the pre-signed URL.
+            // 'audio/m4a' is a common type for AAC audio files.
+            request.setValue("audio/m4a", forHTTPHeaderField: "Content-Type")
+            
+            let (_, response) = try await URLSession.shared.upload(for: request, from: audioData)
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                print("❌ [AuthViewModel] OSS upload failed. Status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+                return false
+            }
+            
+            print("✅ [AuthViewModel] Audio successfully uploaded to OSS.")
+            return true
+            
+        } catch {
+            print("❌ [AuthViewModel] Exception during audio upload: \(error)")
+            return false
+        }
+    }
+    
+    /// Step 3: Tell our backend to process the uploaded file from OSS.
+    func recognizeSpeechTransient(objectKey: String, word: String, planId: Int) async -> String? {
+        guard let token = self.token else {
+            errorMessage = "Authentication token not found."
+            return nil
+        }
+        
+        let request = SubmitOssForRecognitionRequest(object_key: objectKey, word: word, plan_id: planId)
+        
+        do {
+            let response = try await networkService.recognizeSpeechTransient(request: request, token: token)
+            print("✅ [AuthViewModel] Recognition result: '\(response.recognized_text)'")
+            return response.recognized_text
+        } catch {
+            print("❌ [AuthViewModel] Speech recognition failed: \(error)")
+            errorMessage = "Failed to recognize speech."
+            return nil
+        }
+    }
+    
+    // MARK: - Speech Recognition Data Models
+    
+    struct GenerateUploadUrlRequest: Codable {
+        let filename: String
+    }
+    
+    struct GenerateUploadUrlResponse: Codable {
+        let upload_url: String
+        let object_key: String
+    }
+
+    struct SubmitOssForRecognitionRequest: Codable {
+        let object_key: String
+        let word: String
+        let plan_id: Int
+    }
+
+    struct TransientRecognitionResponse: Codable {
+        let recognized_text: String
+    }
 
     func login(email: String, password: String) {
         isLoading = true

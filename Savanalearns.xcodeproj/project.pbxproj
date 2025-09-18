@@ -117,6 +117,10 @@
 		96DAE20F2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
 		96DAE2122E7AADB30060C23D /* homophones_list.db in Resources */ = {isa = PBXBuildFile; fileRef = 96DAE2112E7AADB30060C23D /* homophones_list.db */; };
 		96DAE2132E7AADB30060C23D /* homophones_list.db in Resources */ = {isa = PBXBuildFile; fileRef = 96DAE2112E7AADB30060C23D /* homophones_list.db */; };
+		96DAE22B2E7BB3CB0060C23D /* AudioRecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE22A2E7BB3C90060C23D /* AudioRecordingManager.swift */; };
+		96DAE22C2E7BB3CB0060C23D /* AudioRecordingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE22A2E7BB3C90060C23D /* AudioRecordingManager.swift */; };
+		96DAE22E2E7BF3880060C23D /* SpeechRecognitionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE22D2E7BF3860060C23D /* SpeechRecognitionTestView.swift */; };
+		96DAE22F2E7BF3880060C23D /* SpeechRecognitionTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE22D2E7BF3860060C23D /* SpeechRecognitionTestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +197,8 @@
 		96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCacheManager.swift; sourceTree = "<group>"; };
 		96DAE2102E7A4AAC0060C23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		96DAE2112E7AADB30060C23D /* homophones_list.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = homophones_list.db; sourceTree = "<group>"; };
+		96DAE22A2E7BB3C90060C23D /* AudioRecordingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecordingManager.swift; sourceTree = "<group>"; };
+		96DAE22D2E7BF3860060C23D /* SpeechRecognitionTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognitionTestView.swift; sourceTree = "<group>"; };
 		96FC81692E5FF5CC001A854E /* Savanalearns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Savanalearns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81782E5FF5CD001A854E /* SavanalearnsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96FC81822E5FF5CD001A854E /* SavanalearnsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SavanalearnsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -416,6 +422,7 @@
 		966D0D002E79258D00D78105 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				96DAE22D2E7BF3860060C23D /* SpeechRecognitionTestView.swift */,
 				966D0D132E79AB7500D78105 /* ListeningTestView.swift */,
 				966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */,
 				966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */,
@@ -430,6 +437,7 @@
 		96DAE2092E7A45610060C23D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				96DAE22A2E7BB3C90060C23D /* AudioRecordingManager.swift */,
 				96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */,
 				96DAE20A2E7A457A0060C23D /* AudioManager.swift */,
 			);
@@ -666,6 +674,7 @@
 				966B4ED62E758DF9008891C3 /* SavanalearnsApp.swift in Sources */,
 				960EA1922E7402EC00AB2E5A /* String+Extensions.swift in Sources */,
 				966B4ED72E758E87008891C3 /* ContentView.swift in Sources */,
+				96DAE22F2E7BF3880060C23D /* SpeechRecognitionTestView.swift in Sources */,
 				966B4EE72E758ED4008891C3 /* SideMenuView.swift in Sources */,
 				966B4EE82E758ED4008891C3 /* LoginView.swift in Sources */,
 				966B4EE92E758ED4008891C3 /* LearningPlanView.swift in Sources */,
@@ -673,6 +682,7 @@
 				966B4EEA2E758ED4008891C3 /* HomeView.swift in Sources */,
 				966D0D092E79621300D78105 /* WordMeaningMatchView.swift in Sources */,
 				966B4EEB2E758ED4008891C3 /* DictionarySearchBarView.swift in Sources */,
+				96DAE22B2E7BB3CB0060C23D /* AudioRecordingManager.swift in Sources */,
 				9664376B2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				966D0CFE2E7912F400D78105 /* TestCoordinator.swift in Sources */,
 				966B4EEC2E758ED4008891C3 /* LearningPlanCardView.swift in Sources */,
@@ -708,12 +718,14 @@
 				960EA1882E73F5E500AB2E5A /* LearningPlanCardView.swift in Sources */,
 				960EA1892E73F5E500AB2E5A /* UserProfile.swift in Sources */,
 				960EA18A2E73F5E500AB2E5A /* SideMenuView.swift in Sources */,
+				96DAE22E2E7BF3880060C23D /* SpeechRecognitionTestView.swift in Sources */,
 				960EA18B2E73F5E500AB2E5A /* ContentView.swift in Sources */,
 				960EA18C2E73F5E500AB2E5A /* WordManagementService.swift in Sources */,
 				960EA18D2E73F5E500AB2E5A /* AuthViewModel.swift in Sources */,
 				966D0D0C2E7962C700D78105 /* MeaningToWordSelectView.swift in Sources */,
 				966D0D082E79621300D78105 /* WordMeaningMatchView.swift in Sources */,
 				960EA18E2E73F5E500AB2E5A /* Plan.swift in Sources */,
+				96DAE22C2E7BB3CB0060C23D /* AudioRecordingManager.swift in Sources */,
 				9664376C2E77DAC800F5D2D3 /* ChineseDefinitionExtractor.swift in Sources */,
 				966D0CFF2E7912F400D78105 /* TestCoordinator.swift in Sources */,
 				960EA18F2E73F5E500AB2E5A /* TokenResponse.swift in Sources */,
