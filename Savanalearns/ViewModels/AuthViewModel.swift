@@ -51,23 +51,27 @@ class AuthViewModel: ObservableObject {
                 return false
             }
             
-            // --- CORE FIX: Calculate the required Content-MD5 header ---
-            let digest = Insecure.MD5.hash(data: audioData)
-            let base64Digest = Data(digest).base64EncodedString()
-            // -----------------------------------------------------------
-            
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
             request.setValue("audio/wav", forHTTPHeaderField: "Content-Type")
-            request.setValue(base64Digest, forHTTPHeaderField: "Content-MD5")
+            // CRITICAL: Do NOT add Content-MD5 header - it's not part of the pre-signed URL signature
             
             let (_, response) = try await URLSession.shared.upload(for: request, from: audioData)
             
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                print("❌ [AuthViewModel] OSS upload failed. Status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
-                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 403 {
-                    print("‼️ 403 Error: The Content-MD5 or Content-Type header may not match the server's signature expectations.")
-                }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("❌ [AuthViewModel] Invalid response type")
+                return false
+            }
+            
+            print("📤 [AuthViewModel] OSS upload response status: \(httpResponse.statusCode)")
+            
+            if httpResponse.statusCode == 403 {
+                print("❌ [AuthViewModel] 403 Forbidden - Signature mismatch. The pre-signed URL signature doesn't match.")
+                return false
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("❌ [AuthViewModel] OSS upload failed with status: \(httpResponse.statusCode)")
                 return false
             }
             
