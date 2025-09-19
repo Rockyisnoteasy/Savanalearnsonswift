@@ -25,6 +25,7 @@ struct SpeechRecognitionTestView: View {
     @State private var loadingStatus: String?
     @State private var showNextButton = false
     @State private var recordingStartTime: Date?
+    @State private var isProcessing = false
     @StateObject private var audioRecorder = AudioRecordingManager.shared
     
     private var currentQuestion: TestQuestion {
@@ -162,22 +163,21 @@ struct SpeechRecognitionTestView: View {
                     .foregroundColor(.white)
                     .font(.system(size: 36))
             }
-            .onLongPressGesture(minimumDuration: 3.0, maximumDistance: 50, pressing: { isPressing in
-                if isPressing {
-                    startRecording()
-                } else {
-                    // This is called when the finger is lifted before the minimum duration
-                    if isRecording {
+            .gesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        // This closure is called once when the finger touches down.
+                        // We check if it's already recording to prevent it from firing multiple times.
+                        if !isRecording {
+                            startRecording()
+                        }
+                    }
+                    .onEnded { _ in
+                        // This closure is called once when the finger is lifted.
                         stopRecordingAndSubmit()
                     }
-                }
-            }, perform: {
-                // This is called after the minimum duration, if still pressed
-                if isRecording {
-                    stopRecordingAndSubmit()
-                }
-            })
-            .disabled(loadingStatus != nil)
+            )
+            .disabled(isProcessing)
             .animation(.spring(), value: isRecording)
 
             Text("按住说话")
@@ -212,6 +212,8 @@ struct SpeechRecognitionTestView: View {
     
     private func startRecording() {
         print("🎤 Gesture: Attempting to start recording...")
+        print("🎤 Current permissions: \(audioRecorder.hasPermission)")  // Add this line
+        print("🎤 Is already recording: \(isRecording)")
         guard audioRecorder.hasPermission else {
             print("❌ Failure: Microphone permission denied.")
             loadingStatus = "请在设置中开启麦克风权限"
@@ -239,6 +241,8 @@ struct SpeechRecognitionTestView: View {
     
     private func stopRecordingAndSubmit() {
         print("🎤 Gesture: Attempting to stop recording...")
+        print("🎤 stopRecordingAndSubmit() called")
+        print("🎤 Current recording state: \(isRecording)")
         guard isRecording else {
             print("⚠️ Warning: Not recording, cannot stop.")
             return
@@ -258,6 +262,7 @@ struct SpeechRecognitionTestView: View {
     }
     
     private func submitAudioForRecognition(audioFileURL: URL) {
+        isProcessing = true
         loadingStatus = "上传并识别中..."
         
         Task {
@@ -291,6 +296,7 @@ struct SpeechRecognitionTestView: View {
     }
     
     private func processRecognitionResult(_ resultText: String?) {
+        isProcessing = false
         loadingStatus = nil
         
         guard let recognized = resultText, !recognized.isEmpty else {

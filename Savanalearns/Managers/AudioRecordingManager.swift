@@ -24,11 +24,12 @@ class AudioRecordingManager: NSObject, ObservableObject {
     
     // Recording settings optimized for speech recognition
     private let recordingSettings: [String: Any] = [
-        AVFormatIDKey: Int(kAudioFormatMPEG4AAC), // Using AAC instead of AMR
+        AVFormatIDKey: Int(kAudioFormatLinearPCM), // <-- CHANGE THIS
         AVSampleRateKey: 16000,
         AVNumberOfChannelsKey: 1,
-        AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue,
-        AVEncoderBitRateKey: 96000
+        AVLinearPCMBitDepthKey: 16, // <-- ADD THIS for .wav
+        AVLinearPCMIsBigEndianKey: false, // <-- ADD THIS for .wav
+        AVLinearPCMIsFloatKey: false // <-- ADD THIS for .wav
     ]
     
     private override init() {
@@ -78,7 +79,7 @@ class AudioRecordingManager: NSObject, ObservableObject {
         
         // Create recording URL
         let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let audioFilename = documentsPath.appendingPathComponent("recording_\(Date().timeIntervalSince1970).m4a")
+        let audioFilename = documentsPath.appendingPathComponent("recording_\(Date().timeIntervalSince1970).wav")
         currentRecordingURL = audioFilename
         
         // Start recording
@@ -117,7 +118,7 @@ class AudioRecordingManager: NSObject, ObservableObject {
         let recordingDuration = Date().timeIntervalSince(recordingStartTime ?? Date())
         
         recorder.stop()
-        audioRecorder = nil
+        // audioRecorder = nil
         isRecording = false
         
         // Check minimum duration (800ms)
@@ -187,16 +188,30 @@ class AudioRecordingManager: NSObject, ObservableObject {
 // MARK: - AVAudioRecorderDelegate
 extension AudioRecordingManager: AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        // This method is called after recorder.stop() completes its work.
+        
         if !flag {
-            print("❌ [AudioRecording] Recording finished unsuccessfully")
-            isRecording = false
+            print("❌ [AudioRecording] Recording finished unsuccessfully or failed to save.")
+            // If saving failed, we must clear the URL so we don't use a bad file.
             currentRecordingURL = nil
+        } else {
+            print("✅ [AudioRecording] Delegate confirms recording finished successfully.")
         }
+        
+        // IMPORTANT: Clean up the recorder instance *after* it has finished its job.
+        // This is the step we were missing.
+        self.audioRecorder = nil
+        
+        // Ensure the recording state is false, as the process is now complete.
+        self.isRecording = false
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
         print("❌ [AudioRecording] Encoding error: \(error?.localizedDescription ?? "Unknown")")
-        isRecording = false
-        currentRecordingURL = nil
+        
+        // If an encoding error happens, clean up everything.
+        self.audioRecorder = nil
+        self.isRecording = false
+        self.currentRecordingURL = nil
     }
 }

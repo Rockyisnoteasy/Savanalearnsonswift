@@ -1,6 +1,7 @@
 // ViewModels/AuthViewModel.swift
 import Foundation
 import Combine
+import CryptoKit
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -50,16 +51,23 @@ class AuthViewModel: ObservableObject {
                 return false
             }
             
+            // --- CORE FIX: Calculate the required Content-MD5 header ---
+            let digest = Insecure.MD5.hash(data: audioData)
+            let base64Digest = Data(digest).base64EncodedString()
+            // -----------------------------------------------------------
+            
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
-            // The content type must match what the backend expects for the pre-signed URL.
-            // 'audio/m4a' is a common type for AAC audio files.
-            request.setValue("audio/m4a", forHTTPHeaderField: "Content-Type")
+            request.setValue("audio/wav", forHTTPHeaderField: "Content-Type")
+            request.setValue(base64Digest, forHTTPHeaderField: "Content-MD5")
             
             let (_, response) = try await URLSession.shared.upload(for: request, from: audioData)
             
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                 print("❌ [AuthViewModel] OSS upload failed. Status: \((response as? HTTPURLResponse)?.statusCode ?? -1)")
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 403 {
+                    print("‼️ 403 Error: The Content-MD5 or Content-Type header may not match the server's signature expectations.")
+                }
                 return false
             }
             
