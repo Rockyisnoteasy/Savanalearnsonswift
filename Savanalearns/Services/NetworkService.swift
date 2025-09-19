@@ -238,39 +238,43 @@ class NetworkService {
         print("✅ [NetworkService] uploadNewWords: 新词上传成功 (HTTP \(httpResponse.statusCode))")
     }
     
-    func updateWordStatus(planId: Int, word: String, isCorrect: Bool, testType: String, token: String) async throws {
-        struct WordStatusUpdateRequest: Codable {
-            let plan_id: Int
-            let word: String
-            let is_correct: Bool
-            let test_type: String
+    func updateWordStatus(request: WordStatusUpdateRequest, token: String) async throws -> Bool {
+        guard let url = URL(string: "\(baseURL)learning/word-status") else {
+            throw URLError(.badURL)
         }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        urlRequest.httpBody = try encoder.encode(request)
+
+        // --- FIX START ---
+        // Declare data and response variables here, outside the do-catch block.
+        let data: Data
+        let response: URLResponse
         
-        let payload = WordStatusUpdateRequest(
-            plan_id: planId,
-            word: word,
-            is_correct: isCorrect,
-            test_type: testType
-        )
-        
-        let url = baseURL.appendingPathComponent("word_status")
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = try JSONEncoder().encode(payload)
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            let errorBody = String(data: data, encoding: .utf8) ?? "无法解码服务器回应"
-            print("❌ [NetworkService] updateWordStatus failed: \(errorBody)")
+        do {
+            (data, response) = try await URLSession.shared.data(for: urlRequest)
+        } catch {
+            // This will now only catch fundamental network errors (e.g., no internet).
+            print("❌ [NetworkService] URLSession failed with a network error: \(error)")
+            throw error
+        }
+        // --- FIX END ---
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            // Now 'data' is accessible here because it was declared outside the 'do' block.
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            let serverResponse = String(data: data, encoding: .utf8) ?? "No response body from server."
+            print("❌ [NetworkService] Failed to update word status. Status Code: \(statusCode)")
+            print("  - Server Response: \(serverResponse)")
             throw URLError(.badServerResponse)
         }
         
-        print("✅ [NetworkService] Word status updated successfully")
+        return true
     }
-    
 }

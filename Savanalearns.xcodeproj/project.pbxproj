@@ -111,6 +111,8 @@
 		966D0D122E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */; };
 		966D0D142E79AB7700D78105 /* ListeningTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D132E79AB7500D78105 /* ListeningTestView.swift */; };
 		966D0D152E79AB7700D78105 /* ListeningTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966D0D132E79AB7500D78105 /* ListeningTestView.swift */; };
+		9694CF7D2E7D5495002841B9 /* WordStatusUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9694CF7C2E7D5493002841B9 /* WordStatusUpdateRequest.swift */; };
+		9694CF7E2E7D5495002841B9 /* WordStatusUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9694CF7C2E7D5493002841B9 /* WordStatusUpdateRequest.swift */; };
 		96DAE20C2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */; };
 		96DAE20D2E7A494C0060C23D /* VoiceCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */; };
 		96DAE20E2E7A49520060C23D /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96DAE20A2E7A457A0060C23D /* AudioManager.swift */; };
@@ -193,6 +195,7 @@
 		966D0D0D2E798CB100D78105 /* ChineseToEnglishSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseToEnglishSelectView.swift; sourceTree = "<group>"; };
 		966D0D102E79A8C200D78105 /* ChineseToEnglishSpellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseToEnglishSpellView.swift; sourceTree = "<group>"; };
 		966D0D132E79AB7500D78105 /* ListeningTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListeningTestView.swift; sourceTree = "<group>"; };
+		9694CF7C2E7D5493002841B9 /* WordStatusUpdateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordStatusUpdateRequest.swift; sourceTree = "<group>"; };
 		96DAE20A2E7A457A0060C23D /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		96DAE20B2E7A45CA0060C23D /* VoiceCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCacheManager.swift; sourceTree = "<group>"; };
 		96DAE2102E7A4AAC0060C23D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -246,6 +249,7 @@
 		960EA1382E73F5E500AB2E5A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9694CF7C2E7D5493002841B9 /* WordStatusUpdateRequest.swift */,
 				966D0CFA2E79111000D78105 /* TestModels.swift */,
 				960EA1322E73F5E500AB2E5A /* DailySession.swift */,
 				960EA1332E73F5E500AB2E5A /* Plan.swift */,
@@ -649,6 +653,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9694CF7E2E7D5495002841B9 /* WordStatusUpdateRequest.swift in Sources */,
 				966D0D022E7925A100D78105 /* WordToMeaningSelectView.swift in Sources */,
 				966D0D112E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */,
 				966B4ED82E758EA3008891C3 /* Plan.swift in Sources */,
@@ -693,6 +698,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9694CF7D2E7D5495002841B9 /* WordStatusUpdateRequest.swift in Sources */,
 				966D0D032E7925A100D78105 /* WordToMeaningSelectView.swift in Sources */,
 				966D0D122E79A8C400D78105 /* ChineseToEnglishSpellView.swift in Sources */,
 				960EA17B2E73F5E500AB2E5A /* WordEntry.swift in Sources */,

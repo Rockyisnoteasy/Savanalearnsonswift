@@ -214,41 +214,34 @@ class AuthViewModel: ObservableObject {
     
     /// Process a test answer for a single word
     /// This updates the word status on the backend
-    func processTestAnswer(word: String, isCorrect: Bool, testType: String) {
-        guard let planId = currentTestPlanId else {
-            print("❌ [AuthViewModel] Error: currentTestPlanId is null. Cannot process answer.")
+    func processTestAnswer(word: String, isCorrect: Bool, testType: String, planId: Int) {
+        print("⬆️ [Debug] Preparing to send: word='\(word)', isCorrect=\(isCorrect), testType='\(testType)', planId=\(planId)")
+
+        guard let token = self.token else {
+            print("AuthViewModel Error: No token available for API call.")
             return
         }
-        
+
         Task {
-            guard let token = self.token else {
-                print("❌ [AuthViewModel] Token is null. Cannot process answer.")
-                return
-            }
-            
-            print("⬆️ [AuthViewModel] Submitting answer for '\(word)'. Correct: \(isCorrect), Test: '\(testType)'")
+            let request = WordStatusUpdateRequest(
+                planId: planId,
+                word: word,
+                isCorrect: isCorrect,
+                testType: testType
+            )
             
             do {
-                // Call your network service to update word status
-                // This would be similar to the Kotlin updateWordStatus call
-                try await networkService.updateWordStatus(
-                    planId: planId,
-                    word: word,
-                    isCorrect: isCorrect,
-                    testType: testType,
-                    token: token
-                )
-                
-                print("✅ [AuthViewModel] Successfully updated status for '\(word)'")
-                
-                // Optionally refresh the session or progress
-                fetchDailySession(for: planId)
-                
+                let success = try await networkService.updateWordStatus(request: request, token: token)
+                if success {
+                    print("Successfully updated status for word: \(word)")
+                }
             } catch {
-                print("❌ [AuthViewModel] Failed to update word status for '\(word)': \(error)")
+                print("Failed to update word status for '\(word)': \(error.localizedDescription)")
+                // You can add more robust error handling here if needed
             }
         }
     }
+
     
     /// Mark a word as familiar (used in FlipCard long press)
     func markWordAsFamiliar(_ word: String) {
@@ -256,7 +249,12 @@ class AuthViewModel: ObservableObject {
         
         // Also update on backend if there's an active session
         if let planId = currentTestPlanId {
-            processTestAnswer(word: word, isCorrect: true, testType: "familiar")
+            processTestAnswer(
+                word: word,
+                isCorrect: true,
+                testType: "familiar",
+                planId: planId // Add the missing 'planId' argument here
+            )
         }
     }
     

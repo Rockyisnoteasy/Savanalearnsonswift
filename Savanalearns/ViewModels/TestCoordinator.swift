@@ -8,6 +8,11 @@
 import Foundation
 import SwiftUI
 
+struct TestResult {
+    let word: String
+    let isCorrect: Bool
+}
+
 @MainActor
 class TestCoordinator: ObservableObject {
     // MARK: - Published Properties
@@ -15,6 +20,7 @@ class TestCoordinator: ObservableObject {
     @Published var isTestActive = false
     @Published var showingResults = false
     @Published var testQuestions: [TestQuestion] = []
+    @Published var sessionLearningReport: [String: [Bool]] = [:]
     
     // MARK: - Dependencies
     private let authViewModel: AuthViewModel
@@ -74,29 +80,34 @@ class TestCoordinator: ObservableObject {
     func completeCurrentTest(results: [WordTestResult]) {
         guard var session = currentSession else { return }
         
-        print("✅ [TestCoordinator] Test \(session.currentTestType?.displayName ?? "Unknown") completed with \(results.count) results")
+        print("✅ [TestCoordinator] Test \(session.currentTestType?.displayName ?? "Unknown") completed with \(results.count) results.")
         
-        // Add results to session
-        results.forEach { result in
-            session.addResult(result)
-            
-            // Report to backend via AuthViewModel
-            if let planId = session.planId {
-                authViewModel.processTestAnswer(
-                    word: result.word,
-                    isCorrect: result.isCorrect,
-                    testType: result.testType
-                )
-            }
-        }
+        session.results.append(contentsOf: results)
         
-        // Move to next test
+        // --- Step 1: Record results instead of sending them ---
+        // Convert [WordTestResult] to the simpler [TestResult] format.
+        let simpleResults = results.map { TestResult(word: $0.word, isCorrect: $0.isCorrect) }
+        
+        // Record the results from this test module in our session report.
+        recordTestResult(results: simpleResults)
+        
+        // --- Step 2: Move to the next test ---
         session.moveToNextTest()
         currentSession = session
         
+        // --- Step 3: Check if the entire session is now complete ---
         if session.isComplete {
+            // The session is finished. FINALIZE and SUBMIT the summary report.
+            if let planId = session.planId {
+                print("🚀 [Debug] All tests complete. Finalizing and submitting round results...")
+                finalizeAndSubmitRoundResults(authViewModel: authViewModel, planId: planId)
+            }
+            
+            // Now, call the original finish function.
             finishSession()
+            
         } else {
+            // The session is not complete, prepare questions for the next test.
             prepareQuestionsForCurrentTest()
         }
     }
@@ -235,5 +246,42 @@ extension Array where Element: Hashable {
     func uniqued() -> [Element] {
         var seen = Set<Element>()
         return filter { seen.insert($0).inserted }
+    }
+}
+
+extension TestCoordinator {
+    
+    // Call this from each test view's 'onFinish' callback
+    func recordTestResult(results: [TestResult]) {
+        
+        print("➡️ [Debug] Recording \(results.count) results. Current report has \(sessionLearningReport.count) words.")
+            
+        for result in results {
+            sessionLearningReport[result.word, default: []].append(result.isCorrect)
+        }
+    }
+
+    // Call this when the entire test sequence for a round is complete
+    func finalizeAndSubmitRoundResults(authViewModel: AuthViewModel, planId: Int) {
+        
+        print("🚀 [Debug] Starting finalizeAndSubmitRoundResults for plan ID: \(planId)")
+        print("   [Debug] Found \(sessionLearningReport.count) words in the final report.")
+
+        
+        for (word, results) in sessionLearningReport {
+            // Determines final correctness: true only if all tests were passed.
+            let finalIsCorrect = !results.isEmpty && results.allSatisfy { $0 }
+
+            // Call the ViewModel to send the data to the server
+            authViewModel.processTestAnswer(
+                word: word,
+                isCorrect: finalIsCorrect,
+                testType: "round_end_assessment",
+                planId: planId
+            )
+        }
+        
+        // You might want to clear the report for the next round after submission
+        // sessionLearningReport.removeAll()
     }
 }
